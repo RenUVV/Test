@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <title>Nur Group Logistics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>NUR GROUP LOGISTICS</h1>
+    <div class="grid">
+        <div class="input-group">
+            <label>No. Penghantaran</label>
+            <input type="number" id="n_no">
+        </div>
+        <div class="input-group">
+            <label>Tarikh</label>
+            <input type="date" id="t_date">
+        </div>
+        <div class="input-group full">
+            <label>Nama Staff</label>
+            <input type="text" id="staff">
+        </div>
+
+        <div class="section-label">PENGIRIM</div>
+        <div class="input-group"><input type="text" id="s_n" placeholder="Nama"></div>
+        <div class="input-group"><input type="text" id="s_p" placeholder="No Tel"></div>
+
+        <div class="section-label">PENERIMA</div>
+        <div class="input-group"><input type="text" id="r_n" placeholder="Nama"></div>
+        <div class="input-group"><input type="text" id="r_p" placeholder="No Tel"></div>
+
+        <div class="section-label">BARANG & BAYARAN</div>
+        <div class="input-group full"><textarea id="desc" rows="2" placeholder="Deskripsi Barang"></textarea></div>
+        <div class="input-group">
+            <label>Route</label>
+            <select id="route" onchange="h_m(this.value)">
+                <option value="TAWAU - KENINGAU">TAWAU - KENINGAU</option>
+                <option value="TAWAU - SANDAKAN">TAWAU - SANDAKAN</option>
+                <option value="TAWAU - NABAWAN">TAWAU - NABAWAN</option>
+                <option value="TAWAU - KEDAI MAS">TAWAU - KEDAI MAS</option>
+                <option value="M">-- TAIP MANUAL --</option>
+            </select>
+        </div>
+        <div class="input-group"><label>Manual Route</label><input type="text" id="m_r" disabled placeholder="Taip di sini"></div>
+        <div class="input-group">
+            <label>Kaedah Bayaran</label>
+            <select id="pay">
+                <option value="CASH">CASH</option>
+                <option value="COD">COD</option>
+                <option value="ONLINE">ONLINE</option>
+            </select>
+        </div>
+        <div class="input-group"><label>Harga (RM)</label><input type="number" id="prc" placeholder="0.00"></div>
+        <button onclick="p_t()">CETAK TIKET</button>
+    </div>
+</div>
+
+<div id="receipt" style="display:none;">
+    <div class="header">
+        <h2>NUR GROUP</h2>
+        <div style="font-size:12px;">SABINDO, TAWAU | 019-893 5657</div>
+    </div>
+    <div class="no-box">No: #<span id="p_n"></span></div>
+    <div class="row"><span>Tarikh:</span> <strong id="p_d"></strong></div>
+    <div class="row"><span>Route:</span> <strong id="p_r"></strong></div>
+    <div class="row"><span>Staff:</span> <span id="p_s"></span></div>
+    <div class="line"></div>
+    <div class="info-box">
+        <div class="info-title">PENGIRIM:</div>
+        <div id="p_si"></div>
+    </div>
+    <div class="info-box">
+        <div class="info-title">PENERIMA:</div>
+        <div id="p_ri"></div>
+    </div>
+    <div class="line"></div>
+    <div class="info-title">BARANG:</div>
+    <div id="p_desc" class="item-desc"></div>
+    <div class="row"><span>Bayaran:</span> <strong id="p_m"></strong></div>
+    <div class="row" style="font-size: 20px;"><span>TOTAL:</span> <strong>RM <span id="p_p"></span></strong></div>
+    <div class="line"></div>
+    <div class="footer">
+        PENERIMA WAJIB TANDATANGAN
+        <div class="sign-space">
+            <br>
+            ..........................<br>
+            (Tandatangan Penerima)
+        </div>
+    </div>
+</div>
+
+<script>
+    const dateInput = document.getElementById('t_date');
+    dateInput.value = new Date().toISOString().split('T')[0];
+
+    let currentNo = localStorage.getItem('n_idx') || 8001;
+    document.getElementById('n_no').value = currentNo;
+
+    function h_m(v) { 
+        document.getElementById('m_r').disabled = (v !== "M"); 
+        if(v==="M") document.getElementById('m_r').focus(); 
+    }
+
+    function p_t() {
+        const inputNo = document.getElementById('n_no').value;
+        const sn = document.getElementById('s_n').value;
+        const rn = document.getElementById('r_n').value;
+        const ds = document.getElementById('desc').value;
+        let rt = document.getElementById('route').value;
+        if(rt === "M") rt = document.getElementById('m_r').value;
+
+        if(!sn || !rn || !ds || !rt) return alert("Sila isi maklumat!");
+
+        document.getElementById('p_n').innerText = inputNo;
+        document.getElementById('p_d').innerText = new Date(dateInput.value).toLocaleDateString('ms-MY');
+        document.getElementById('p_s').innerText = (document.getElementById('staff').value || "STAFF").toUpperCase();
+        document.getElementById('p_r').innerText = rt.toUpperCase();
+        document.getElementById('p_si').innerText = sn.toUpperCase() + " (" + document.getElementById('s_p').value + ")";
+        document.getElementById('p_ri').innerText = rn.toUpperCase() + " (" + document.getElementById('r_p').value + ")";
+        document.getElementById('p_desc').innerText = ds.toUpperCase();
+        document.getElementById('p_m').innerText = document.getElementById('pay').value;
+        document.getElementById('p_p').innerText = parseFloat(document.getElementById('prc').value || 0).toFixed(2);
+
+        window.print();
+        localStorage.setItem('n_idx', parseInt(inputNo) + 1);
+        setTimeout(() => { location.reload(); }, 500);
+    }
+</script>
+</body>
+</html>
