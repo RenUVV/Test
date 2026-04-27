@@ -75,7 +75,7 @@
             <input type="number" id="prc" placeholder="0.00" step="0.01">
         </div>
         <button onclick="p_t()">🖨️ PRINT BILL</button>
-        <button class="btn-img" onclick="s_img()">📥 SAVE AS IMAGE</button>
+        <button class="btn-img" onclick="s_img()">SAVE AS PDF</button>
     </div>
 </div>
 
@@ -130,6 +130,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
     const dateInput = document.getElementById('t_date');
     dateInput.value = new Date().toISOString().split('T')[0];
@@ -218,10 +219,13 @@
 
         setTimeout(() => {
             html2canvas(receipt, { scale: 3, backgroundColor: '#ffffff', useCORS: true, width: 378 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'bill-' + inputNo + '.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                const pdfW = 100;
+                const pdfH = (canvas.height * pdfW) / canvas.width;
+                const pdf = new jsPDF({ unit: 'mm', format: [pdfW, pdfH], orientation: 'portrait' });
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+                pdf.save('bill-' + inputNo + '.pdf');
                 receipt.style.cssText = 'display:none;';
                 localStorage.setItem('n_idx', parseInt(inputNo)+1);
                 setTimeout(() => { location.reload(); }, 500);
