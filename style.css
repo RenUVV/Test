@@ -12,6 +12,7 @@
     textarea { resize: none; }
     button { padding: 14px; background: #d3e9ff; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 8px; }
     .btn-img { background: rgb(54, 54, 66); margin-top: 8px; }
+    .btn-dashboard { background: #27ae60; margin-top: 8px; }
     #receipt { display: none; }
 }
 
@@ -37,23 +38,27 @@
 
     .rcp-title { text-align: center; font-size: 11.5pt; font-weight: bold; margin: 4px 0 2px 0; letter-spacing: 0.3px; }
 
-    .rcp-nobil-row { display: flex; justify-content: space-between; font-size: 9pt; font-weight: bold; margin: 2px 0; }
+    /* date */
+    .rcp-nobil-row { display: flex; justify-content: space-between; font-size: 9pt; font-weight: bold; margin: 5px 0 5px 0; }
 
     .rcp-bayaran { font-size: 9pt; font-weight: bold; text-align: center; margin: 3px 0; letter-spacing: 0.5px; }
     .rcp-bayaran span { margin: 0 2px; }
 
     .line-solid { border: none; border-top: 1px solid black; margin: 4px 0; }
 
-    .rcp-section-hdr { font-size: 9pt; font-weight: bold; margin: 3px 0 1px 0; }
-    .rcp-row { display: flex; font-size: 9pt; margin: 1px 0; line-height: 1.45; }
+    /* from */
+    .rcp-section-hdr { font-size: 9pt; font-weight: bold; margin: 6px 0 3px 0; }
+
+    .rcp-row { display: flex; font-size: 9pt; margin: 2px 0; line-height: 1.6; }
     .lbl { font-weight: bold; width: 20mm; flex-shrink: 0; }
     .col { margin-right: 3px; font-weight: bold; }
 
-    .rcp-butiran-lbl { font-size: 9pt; font-weight: bold; margin: 4px 0 2px 0; }
-    .rcp-butiran-val { font-size: 9pt; min-height: 14mm; margin-bottom: 3px; word-break: break-word; line-height: 1.5; }
+   
+    .rcp-butiran-lbl { font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; }
+    .rcp-butiran-val { font-size: 9pt; min-height: 14mm; margin-bottom: 5px; word-break: break-word; line-height: 1.8; }
 
-    .rcp-jumlah { font-size: 10pt; font-weight: bold; margin: 3px 0 2px 0; }
+    .rcp-jumlah { font-size: 10pt; font-weight: bold; margin: 5px 0 4px 0; }
 
-    .rcp-footer { text-align: center; font-size: 8.5pt; margin-top: 4px; line-height: 1.6; }
+    .rcp-footer { text-align: center; font-size: 8.5pt; margin-top: 6px; line-height: 1.6; }
     .rcp-dicetak { font-weight: bold; }
 }
