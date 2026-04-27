@@ -75,7 +75,7 @@
             <input type="number" id="prc" placeholder="0.00" step="0.01">
         </div>
         <button onclick="p_t()">🖨️ PRINT BILL</button>
-        <button class="btn-img" onclick="s_img()"> SAVE</button>
+        <button class="btn-img" onclick="s_img()">📥 SAVE AS IMAGE</button>
     </div>
 </div>
 
@@ -194,17 +194,39 @@
     function s_img() {
         if (!fill_receipt()) return;
         const receipt = document.getElementById('receipt');
-        receipt.style.display = 'block';
         const inputNo = document.getElementById('n_no').value;
-        html2canvas(receipt, { scale: 3, backgroundColor: '#ffffff', useCORS: true }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'bill-' + inputNo + '.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            receipt.style.display = 'none';
-            localStorage.setItem('n_idx', parseInt(inputNo)+1);
-            setTimeout(() => { location.reload(); }, 500);
-        });
+
+        receipt.style.cssText = "display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
+
+        receipt.querySelectorAll('.rcp-logo').forEach(el => el.style.width = '68px');
+        receipt.querySelectorAll('.rcp-header').forEach(el => el.style.textAlign = 'center');
+        receipt.querySelectorAll('.rcp-company').forEach(el => { el.style.fontSize = '10.5pt'; el.style.fontWeight = 'bold'; el.style.lineHeight = '1.3'; });
+        receipt.querySelectorAll('.rcp-address,.rcp-tel').forEach(el => { el.style.fontSize = '8pt'; el.style.lineHeight = '1.3'; });
+        receipt.querySelectorAll('.rcp-title').forEach(el => { el.style.fontSize = '11.5pt'; el.style.fontWeight = 'bold'; el.style.textAlign = 'center'; el.style.margin = '4px 0 2px 0'; });
+        receipt.querySelectorAll('.rcp-nobil-row').forEach(el => { el.style.display = 'flex'; el.style.justifyContent = 'space-between'; el.style.fontSize = '9pt'; el.style.fontWeight = 'bold'; });
+        receipt.querySelectorAll('.rcp-bayaran').forEach(el => { el.style.fontSize = '9pt'; el.style.textAlign = 'center'; el.style.fontWeight = 'bold'; });
+        receipt.querySelectorAll('.rcp-section-hdr').forEach(el => { el.style.fontSize = '9pt'; el.style.fontWeight = 'bold'; el.style.margin = '3px 0 1px 0'; });
+        receipt.querySelectorAll('.rcp-row').forEach(el => { el.style.display = 'flex'; el.style.fontSize = '9pt'; el.style.margin = '1px 0'; });
+        receipt.querySelectorAll('.lbl').forEach(el => { el.style.width = '76px'; el.style.flexShrink = '0'; el.style.fontWeight = 'bold'; });
+        receipt.querySelectorAll('.col').forEach(el => { el.style.marginRight = '3px'; el.style.fontWeight = 'bold'; });
+        receipt.querySelectorAll('.rcp-butiran-lbl').forEach(el => { el.style.fontSize = '9pt'; el.style.fontWeight = 'bold'; el.style.margin = '4px 0 2px 0'; });
+        receipt.querySelectorAll('.rcp-butiran-val').forEach(el => { el.style.fontSize = '9pt'; el.style.minHeight = '40px'; el.style.lineHeight = '1.5'; });
+        receipt.querySelectorAll('.rcp-jumlah').forEach(el => { el.style.fontSize = '10pt'; el.style.fontWeight = 'bold'; el.style.margin = '3px 0 2px 0'; });
+        receipt.querySelectorAll('.line-solid').forEach(el => { el.style.border = 'none'; el.style.borderTop = '1px solid black'; el.style.margin = '4px 0'; });
+        receipt.querySelectorAll('.rcp-footer').forEach(el => { el.style.textAlign = 'center'; el.style.fontSize = '8.5pt'; el.style.marginTop = '4px'; el.style.lineHeight = '1.6'; });
+        receipt.querySelectorAll('.rcp-dicetak').forEach(el => el.style.fontWeight = 'bold');
+
+        setTimeout(() => {
+            html2canvas(receipt, { scale: 3, backgroundColor: '#ffffff', useCORS: true, width: 378 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'bill-' + inputNo + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                receipt.style.cssText = 'display:none;';
+                localStorage.setItem('n_idx', parseInt(inputNo)+1);
+                setTimeout(() => { location.reload(); }, 500);
+            });
+        }, 300);
     }
 </script>
 </body>
