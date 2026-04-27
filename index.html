@@ -207,8 +207,20 @@ async function p_t(){
     const data=getFormData();
     const current=parseInt(document.getElementById('n_no').value)||1;
     await saveToSheets(data);
+
+    // ✅ Duplicate receipt untuk 2 salinan
+    const receipt=document.getElementById('receipt');
+    const clone=receipt.cloneNode(true);
+    clone.id='receipt-copy';
+    clone.style.pageBreakBefore='always';
+    receipt.parentNode.insertBefore(clone,receipt.nextSibling);
+
     window.print();
+
     setTimeout(()=>{
+        // Buang clone lepas print
+        const copy=document.getElementById('receipt-copy');
+        if(copy)copy.parentNode.removeChild(copy);
         document.getElementById('n_no').value=current+1;
         manualEdit=false;
         clearForm();
@@ -246,13 +258,17 @@ receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weig
 
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
-            const{jsPDF}=window.jspdf;
-            const imgData=canvas.toDataURL('image/png');
-            const pdfW=100;
-            const pdfH=(canvas.height*pdfW)/canvas.width;
-            const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
-            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-            pdf.save('bil-'+inputNo+'.pdf');
+    const{jsPDF}=window.jspdf;
+    const imgData=canvas.toDataURL('image/png');
+    const pdfW=100;
+    const pdfH=(canvas.height*pdfW)/canvas.width;
+
+    // ✅ 2 pages — sama gambar
+    const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
+    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+    pdf.addPage([pdfW,pdfH],'portrait'); // ✅ page kedua
+    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+    pdf.save('bil-'+inputNo+'.pdf');
 
             receipt.style.cssText='display:none;';
             await saveToSheets(data);
