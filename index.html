@@ -125,7 +125,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbz_0CXs_fioJPXM3NSu8Sa109zJB5pBXMpzhKq88EyhSZ2BWSqEk1HE5uJWWe1EWl_PvA/exec";
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzM_HfWi3_4T9oHTNFREURfd5jm9HG05FVlhJ4blTN0bNNP0Mg6TESv8ldadrleNweAxA/exec";
 
 const dateInput=document.getElementById('t_date');
 const now=new Date();
@@ -210,7 +210,7 @@ async function p_t(){
     const current=parseInt(document.getElementById('n_no').value)||1;
     await saveToSheets(data);
 
-    // ✅ Duplicate receipt untuk 2 salinan
+    
     const receipt=document.getElementById('receipt');
     const clone=receipt.cloneNode(true);
     clone.id='receipt-copy';
@@ -220,7 +220,7 @@ async function p_t(){
     window.print();
 
     setTimeout(()=>{
-        // Buang clone lepas print
+       
         const copy=document.getElementById('receipt-copy');
         if(copy)copy.parentNode.removeChild(copy);
         document.getElementById('n_no').value=current+1;
@@ -236,12 +236,12 @@ async function s_img(){
     const receipt=document.getElementById('receipt');
     const inputNo=document.getElementById('n_no').value;
 
-    // ✅ Simpan ke sheet DULU sebelum buat PDF
+    
     await saveToSheets(data);
 
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
 
-// Fix semua elemen dalam receipt supaya sama macam print
+
 receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
 receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
 receipt.querySelectorAll('.rcp-company').forEach(el=>el.style.cssText='font-size:10.5pt;font-weight:bold;margin:0 0 1px 0;line-height:1.3;text-align:center;');
@@ -268,10 +268,10 @@ receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weig
     const pdfW=100;
     const pdfH=(canvas.height*pdfW)/canvas.width;
 
-    // ✅ 2 pages — sama gambar
+   
     const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
     pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-    pdf.addPage([pdfW,pdfH],'portrait'); // ✅ page kedua
+    pdf.addPage([pdfW,pdfH],'portrait'); 
     pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
     pdf.save('bil-'+inputNo+'.pdf');
 
