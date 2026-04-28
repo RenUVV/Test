@@ -322,7 +322,7 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
     <div class="dot"></div>
     <h1>Dashboard - Arsyila Bersaudara</h1>
   </div>
-  <a href="index.html">← Back to Form</a>
+  <a href="index.html">← Back</a>
 </div>
 
 <div class="page">
@@ -331,7 +331,7 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
     <div class="date-nav">
       <button class="nav-btn" onclick="prevDate()">&#9664;</button>
       <div>
-        <div class="date-label">Tarikh</div>
+        <div class="date-label">Date</div>
         <div class="date-display" id="date-display">—</div>
       </div>
       <button class="nav-btn" onclick="nextDate()">&#9654;</button>
@@ -368,11 +368,10 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
 
   <div class="filters-row">
     <div class="search-wrap">
-      <span class="search-icon">&#128269;</span>
-      <input type="text" id="f-search" placeholder="Cari bil, nama, telefon..." oninput="renderTable()">
+      <input type="text" id="f-search" placeholder="Search" oninput="renderTable()">
     </div>
     <select class="filter-select" id="f-pay" onchange="renderTable()">
-      <option value="">Semua Jenis</option>
+      <option value="">All Types</option>
       <option value="TUNAI">CASH</option>
       <option value="COD">COD</option>
       <option value="ACC">ACC</option>
@@ -388,15 +387,15 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
       <table>
         <thead>
           <tr>
-            <th>No</th><th>Tarikh</th><th>Staff</th>
-            <th>Pengirim</th><th>Tel</th><th>Dari</th>
-            <th>Penerima</th><th>Tel</th><th>Ke</th>
-            <th>Butiran</th><th>Bayaran</th><th>RM</th>
+            <th>NO</th><th>DATE</th><th>STAFF</th>
+            <th>SENDER</th><th>Tel</th><th>FROM</th>
+            <th>RECEIVER</th><th>Tel</th><th>TO</th>
+            <th>DETAILS</th><th>PAYMENT</th><th>RM</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody id="tbody">
-          <tr><td colspan="13" class="loading">Memuatkan data...</td></tr>
+          <tr><td colspan="13" class="loading">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -474,7 +473,7 @@ function renderTable(){
   document.getElementById('table-count').textContent=filtered.length+' rekod';
 
   if(!filtered.length){
-    tb.innerHTML='<tr><td colspan="13" class="empty">Tiada data dijumpai.</td></tr>';
+    tb.innerHTML='<tr><td colspan="13" class="empty">No Data Found.</td></tr>';
     return;
   }
 
@@ -539,12 +538,12 @@ fetch(SCRIPT_URL,{
   })
 });
 
-  alert('Done All berjaya disimpan ke sheet!');
+  alert('Done');
 }
 
 function resetDate(){
   document.getElementById('modal-msg').textContent=
-    'Semua data untuk '+dateDisplay.textContent+' akan didelete.';
+    'All data for '+dateDisplay.textContent+' will be deleted.';
   document.getElementById('modal-overlay').style.display='flex';
 }
 
