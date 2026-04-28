@@ -125,6 +125,12 @@ position:relative;
 overflow:hidden;
 }
 
+.btn-qr{
+  background:linear-gradient(135deg,#4c1d95,#2e1065);
+  color:#e9d5ff;
+  margin-top:8px;
+}
+
 button:not(.btn-img):not(.btn-dashboard){
 background:linear-gradient(135deg,#1e3a8a,#172554);
 color:#e5e7eb;
