@@ -367,17 +367,37 @@ function doneAll(){
 }
 
 function resetDate(){
-  if(confirm('Reset semua data untuk tarikh ini?\nTindakan ini tidak boleh dibatalkan.')){
-    const d=dateInput.value;
-    fetch(SCRIPT_URL+'?action=resetByDate&date='+d)
-    .then(r=>r.json())
-    .then(()=>{
-      alert('Data tarikh '+dateDisplay.textContent+' berjaya didelete.');
-      load();
-    })
-    .catch(()=>load());
-  }
+  document.getElementById('modal-msg').textContent=
+    'Semua data untuk '+dateDisplay.textContent+' akan didelete. Tindakan ini tidak boleh dibatalkan.';
+  const overlay=document.getElementById('modal-overlay');
+  overlay.style.display='flex';
 }
+
+function closeModal(){
+  document.getElementById('modal-overlay').style.display='none';
+}
+
+function confirmReset(){
+  closeModal();
+  const d=dateInput.value;
+  fetch(SCRIPT_URL+'?action=resetByDate&date='+d)
+  .then(r=>r.json())
+  .then(()=>{
+    load();
+  })
+  .catch(()=>load());
+}
+
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:12px;padding:24px;margin:16px;max-width:320px;width:100%;">
+    <div style="font-size:15px;font-weight:600;color:#1a2332;margin-bottom:8px;">Reset Tarikh</div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:20px;" id="modal-msg"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="closeModal()" style="padding:8px 16px;border-radius:8px;border:1px solid #e2e8f0;background:white;font-size:13px;cursor:pointer;">Batal</button>
+      <button onclick="confirmReset()" style="padding:8px 16px;border-radius:8px;border:none;background:#fee2e2;color:#991b1b;font-size:13px;font-weight:600;cursor:pointer;">Ya, Delete</button>
+    </div>
+  </div>
+</div>
 
 load();
 </script>
