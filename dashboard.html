@@ -220,32 +220,44 @@ justify-content:space-between;
 .table-title{font-weight:600;color:#f1f5f9;}
 .table-count{font-size:12px;color:#94a3b8;}
 
-table{width:100%;border-collapse:collapse;}
-
-thead tr{background:#0f1b2e;}
-
-th{
-padding:14px;
-font-size:11px;
-text-transform:uppercase;
-color:#64748b;
-border-bottom:1px solid rgba(255,255,255,0.05);
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 
-td{
-padding:14px;
-font-size:13px;
-border-bottom:1px solid rgba(255,255,255,0.05);
-color:#e5e7eb;
+th, td {
+    padding: 14px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #e5e7eb;
+    text-align: center;
+    vertical-align: middle;
 }
 
-tbody tr{
-transition:.25s;
+thead tr {
+    background: #0f1b2e;
 }
 
-tbody tr:hover{
-background:#1e293b;
-transform:scale(1.01);
+th {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: center;
+}
+
+tbody tr {
+    transition: .25s;
+}
+
+tbody tr:hover {
+    background: #1e293b;
+    transform: scale(1.01);
+}
+
+td:nth-child(8) {
+    min-width: 100px;
+    word-break: break-word;
 }
 
 .pay-badge{
@@ -275,6 +287,22 @@ background:rgba(15,23,42,0.95)!important;
 color:#f1f5f9;
 border:1px solid rgba(255,255,255,0.05);
 box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    margin: 0 auto; 
+    display: block;
+}
+
+.delete-btn:hover {
+    color: #dc2626; 
+    transform: scale(1.1);
 }
 
 @media(max-width:768px){
@@ -364,10 +392,11 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
             <th>Pengirim</th><th>Tel</th><th>Dari</th>
             <th>Penerima</th><th>Tel</th><th>Ke</th>
             <th>Butiran</th><th>Bayaran</th><th>RM</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="tbody">
-          <tr><td colspan="12" class="loading">Memuatkan data...</td></tr>
+          <tr><td colspan="13" class="loading">Memuatkan data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -375,22 +404,23 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
 
 </div>
 
-<!-- ✅ MODAL DIPINDAHKAN KE SINI (LUAR SCRIPT) -->
 <div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
   <div style="background:white;border-radius:12px;padding:24px;margin:16px;max-width:320px;width:100%;">
-    <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Reset Tarikh</div>
+    <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Confirm Delete</div>
     <div style="font-size:13px;margin-bottom:20px;" id="modal-msg"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
-      <button onclick="closeModal()" style="padding:8px 16px;border-radius:8px;border:1px solid #e2e8f0;background:white;">Batal</button>
-      <button onclick="confirmReset()" style="padding:8px 16px;border-radius:8px;border:none;background:#fee2e2;color:#991b1b;font-weight:600;">Ya, Delete</button>
+      <button onclick="closeModal()" style="padding:8px 16px;border-radius:8px;border:1px solid #e2e8f0;background:white;">Cancel</button>
+      <button onclick="confirmDelete()" style="padding:8px 16px;border-radius:8px;border:none;background:#fee2e2;color:#991b1b;font-weight:600;">Yes, Delete</button>
     </div>
   </div>
 </div>
 
 <script>
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz_0CXs_fioJPXM3NSu8Sa109zJB5pBXMpzhKq88EyhSZ2BWSqEk1HE5uJWWe1EWl_PvA/exec";
+
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzM_HfWi3_4T9oHTNFREURfd5jm9HG05FVlhJ4blTN0bNNP0Mg6TESv8ldadrleNweAxA/exec";
 
 let data=[];
+let itemToDelete = null;
 const dateInput=document.getElementById('date');
 const dateDisplay=document.getElementById('date-display');
 
@@ -427,7 +457,7 @@ function load(){
     calc();
   })
   .catch(()=>{
-    document.getElementById('tbody').innerHTML='<tr><td colspan="12" class="empty">Gagal memuatkan data.</td></tr>';
+    document.getElementById('tbody').innerHTML='<tr><td colspan="13" class="empty">Gagal memuatkan data.</td></tr>';
   });
 }
 
@@ -444,7 +474,7 @@ function renderTable(){
   document.getElementById('table-count').textContent=filtered.length+' rekod';
 
   if(!filtered.length){
-    tb.innerHTML='<tr><td colspan="12" class="empty">Tiada data dijumpai.</td></tr>';
+    tb.innerHTML='<tr><td colspan="13" class="empty">Tiada data dijumpai.</td></tr>';
     return;
   }
 
@@ -462,6 +492,7 @@ function renderTable(){
     <td>${r[9]}</td>
     <td><span class="pay-badge ${r[10]}">${r[10]}</span></td>
     <td><strong>RM ${parseFloat(r[11]||0).toFixed(2)}</strong></td>
+    <td><button class="delete-btn" onclick="showDeleteModal('${r[0]}', '${r[1]}')">✕</button></td>
   </tr>`).join('');
 }
 
@@ -495,17 +526,18 @@ function doneAll(){
     if(r[10]==='ACC')a+=amt;
   });
 
-  fetch(SCRIPT_URL,{
-    method:'POST',
-    mode:'no-cors',
-    body:JSON.stringify({
-      action:'doneAll',
-      tunai:t,
-      cod:c,
-      acc:a,
-      total:(t+c+a)
-    })
-  });
+fetch(SCRIPT_URL,{
+  method:'POST',
+  mode:'no-cors',
+  body:JSON.stringify({
+    action:'doneAll',
+    date: dateInput.value,
+    tunai:t,
+    cod:c,
+    acc:a,
+    total:(t+c+a)
+  })
+});
 
   alert('Done All berjaya disimpan ke sheet!');
 }
@@ -516,8 +548,39 @@ function resetDate(){
   document.getElementById('modal-overlay').style.display='flex';
 }
 
+function showDeleteModal(no, tarikh) {
+    itemToDelete = { no, tarikh };
+    document.getElementById('modal-msg').textContent =
+        'Are you sure you want to delete bill No. ' + no + '?';
+    document.getElementById('modal-overlay').style.display = 'flex';
+}
+
 function closeModal(){
   document.getElementById('modal-overlay').style.display='none';
+  itemToDelete = null;
+}
+
+function confirmDelete(){
+    if (!itemToDelete) {
+        closeModal();
+        return;
+    }
+    const { no, tarikh } = itemToDelete;
+    closeModal();
+
+    fetch(SCRIPT_URL + '?action=deleteBill&no=' + encodeURIComponent(no) + '&tarikh=' + encodeURIComponent(tarikh))
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            load();
+        } else {
+            alert('Gagal memadam: ' + (result.message || 'Tiada respons'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Ralat semasa menghubungi server.');
+    });
 }
 
 function confirmReset(){
