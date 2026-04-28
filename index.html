@@ -75,8 +75,20 @@
             <input type="number" id="prc" placeholder="0.00" step="0.01">
         </div>
         <button onclick="p_t()">PRINT</button>
-        <button class="btn-img" onclick="s_img()"> SAVE </button>
+        <button class="btn-img" onclick="s_img()">SAVE</button>
+        <button class="btn-qr" onclick="toggle_qr()">QR</button>
         <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">DASHBOARD</button>
+    </div>
+</div>
+
+<div id="qr-overlay" onclick="toggle_qr()">
+    <div id="qr-modal" onclick="event.stopPropagation()">
+        <div id="qr-close" onclick="toggle_qr()">&#x2715;</div>
+                <div id="qr-title">ARSYILA BERSAUDARA TRAVEL</div>
+        <div id="qr-img-wrap">
+            <img id="qr-img" src="qr.jpg" alt="QR Code">
+        </div>
+        <div id="qr-hint">Imbas kod QR untuk membuat pembayaran</div>
     </div>
 </div>
 
@@ -86,15 +98,15 @@
         <div class="rcp-company">ARSYILA BERSAUDARA TRAVEL &amp; TOURS SDN.BHD.</div>
         <div class="rcp-address">TB 496, TINGKAT 1, BLOK Q, 91000 TAWAU, SABAH.</div>
         <div class="rcp-tel">Tel: 012- 279 5657 (TWU) &nbsp; 012- 453 5657 (KGU)</div>
-<div style="margin-top:20px;"></div>
+        <div style="margin-top:20px;"></div>
     </div>
-<div class="rcp-title">RESIT KIRIMAN BARANG</div>
-<div style="margin-top:20px;"></div>
+    <div class="rcp-title">RESIT KIRIMAN BARANG</div>
+    <div style="margin-top:20px;"></div>
     <div class="rcp-nobil-row">
         <span>No.Bil : <span id="p_n"></span></span>
         <span>Tarikh : <span id="p_d"></span></span>
     </div>
-<div style="margin-top:20px;"></div>
+    <div style="margin-top:20px;"></div>
     <div class="rcp-bayaran">
         Bayaran :
         <span>[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI</span>
@@ -105,8 +117,8 @@
     <div class="rcp-row"><span class="lbl">DARIPADA</span><span class="col">:</span><span id="p_si_n"></span></div>
     <div class="rcp-row"><span class="lbl">TEL</span><span class="col">:</span><span id="p_si_p"></span></div>
     <div class="rcp-row"><span class="lbl">ALAMAT</span><span class="col">:</span><span id="p_si_a"></span></div>
-<div style="margin-top:20px;"></div>
-<div class="rcp-row"><span class="lbl">KEPADA</span><span class="col">:</span><span id="p_ri_n"></span></div>
+    <div style="margin-top:20px;"></div>
+    <div class="rcp-row"><span class="lbl">KEPADA</span><span class="col">:</span><span id="p_ri_n"></span></div>
     <div class="rcp-row"><span class="lbl">TEL</span><span class="col">:</span><span id="p_ri_p"></span></div>
     <div class="rcp-row"><span class="lbl">ALAMAT</span><span class="col">:</span><span id="p_ri_a"></span></div>
     <hr class="line-solid">
@@ -114,7 +126,7 @@
     <div class="rcp-butiran-val" id="p_desc"></div>
     <div class="rcp-jumlah">JUMLAH : RM <span id="p_p"></span></div>
     <hr class="line-solid">
-   <div class="rcp-footer">
+    <div class="rcp-footer">
         <div class="rcp-dicetak">DICETAK OLEH : <span id="p_s"></span></div>
         <div style="margin-top:20px;">TERIMA KASIH</div>
         <div style="font-size:13pt;font-weight:bold;">NUR GROUP</div>
@@ -134,20 +146,37 @@ dateInput.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'
 let manualEdit=false;
 const billInput=document.getElementById('n_no');
 
-billInput.addEventListener('input',function(){
-    manualEdit=true;
-});
+billInput.addEventListener('input',function(){manualEdit=true;});
 
 (function fetchNext(){
     const s=document.createElement('script');
-    window._cbNext=function(json){
-        if(!manualEdit){
-            billInput.value=json.nextNo||1;
-        }
-    };
+    window._cbNext=function(json){if(!manualEdit){billInput.value=json.nextNo||1;}};
     s.src=APPS_SCRIPT_URL+"?action=getNextNo&callback=_cbNext&t="+Date.now();
     document.body.appendChild(s);
 })();
+
+let qrVisible=false;
+function toggle_qr(){
+    const overlay=document.getElementById('qr-overlay');
+    const modal=document.getElementById('qr-modal');
+    if(!qrVisible){
+        overlay.style.display='flex';
+        requestAnimationFrame(()=>{
+            overlay.style.opacity='1';
+            modal.style.transform='translateY(0) scale(1)';
+            modal.style.opacity='1';
+        });
+        qrVisible=true;
+    } else {
+        overlay.style.opacity='0';
+        modal.style.transform='translateY(20px) scale(0.95)';
+        modal.style.opacity='0';
+        setTimeout(()=>{overlay.style.display='none';},320);
+        qrVisible=false;
+    }
+}
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&qrVisible)toggle_qr();});
 
 function h_addr(side){
     const sel=document.getElementById(side+'_a_sel');
@@ -199,9 +228,7 @@ function getFormData(){
 }
 
 async function saveToSheets(data){
-    try{
-        await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    }catch(e){}
+    try{await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){}
 }
 
 async function p_t(){
@@ -209,18 +236,13 @@ async function p_t(){
     const data=getFormData();
     const current=parseInt(document.getElementById('n_no').value)||1;
     await saveToSheets(data);
-
-    
     const receipt=document.getElementById('receipt');
     const clone=receipt.cloneNode(true);
     clone.id='receipt-copy';
     clone.style.pageBreakBefore='always';
     receipt.parentNode.insertBefore(clone,receipt.nextSibling);
-
     window.print();
-
     setTimeout(()=>{
-       
         const copy=document.getElementById('receipt-copy');
         if(copy)copy.parentNode.removeChild(copy);
         document.getElementById('n_no').value=current+1;
@@ -231,57 +253,45 @@ async function p_t(){
 
 async function s_img(){
     if(!fill_receipt())return;
-
     const data=getFormData();
     const receipt=document.getElementById('receipt');
     const inputNo=document.getElementById('n_no').value;
-
-    
     await saveToSheets(data);
-
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
-
-
-receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
-receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
-receipt.querySelectorAll('.rcp-company').forEach(el=>el.style.cssText='font-size:10.5pt;font-weight:bold;margin:0 0 1px 0;line-height:1.3;text-align:center;');
-receipt.querySelectorAll('.rcp-address').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0;line-height:1.3;text-align:center;');
-receipt.querySelectorAll('.rcp-tel').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0 0 0;line-height:1.3;text-align:center;');
-receipt.querySelectorAll('.rcp-title').forEach(el=>el.style.cssText='text-align:center;font-size:11.5pt;font-weight:bold;margin:4px 0 2px 0;letter-spacing:0.3px;');
-receipt.querySelectorAll('.rcp-nobil-row').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:9pt;font-weight:bold;margin:5px 0;');
-receipt.querySelectorAll('.rcp-bayaran').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;text-align:center;margin:3px 0;letter-spacing:0.5px;');
-receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1px solid black;margin:4px 0;');
-receipt.querySelectorAll('.rcp-section-hdr').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:6px 0 3px 0;');
-receipt.querySelectorAll('.rcp-row').forEach(el=>el.style.cssText='display:flex;font-size:9pt;margin:2px 0;line-height:1.6;');
-receipt.querySelectorAll('.lbl').forEach(el=>el.style.cssText='font-weight:bold;width:20mm;flex-shrink:0;');
-receipt.querySelectorAll('.col').forEach(el=>el.style.cssText='margin-right:3px;font-weight:bold;');
-receipt.querySelectorAll('.rcp-butiran-lbl').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:8px 0 4px 0;');
-receipt.querySelectorAll('.rcp-butiran-val').forEach(el=>el.style.cssText='font-size:9pt;min-height:14mm;margin-bottom:5px;word-break:break-word;line-height:1.8;');
-receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
-receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
-receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
-
+    receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
+    receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
+    receipt.querySelectorAll('.rcp-company').forEach(el=>el.style.cssText='font-size:10.5pt;font-weight:bold;margin:0 0 1px 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-address').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-tel').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0 0 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-title').forEach(el=>el.style.cssText='text-align:center;font-size:11.5pt;font-weight:bold;margin:4px 0 2px 0;letter-spacing:0.3px;');
+    receipt.querySelectorAll('.rcp-nobil-row').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:9pt;font-weight:bold;margin:5px 0;');
+    receipt.querySelectorAll('.rcp-bayaran').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;text-align:center;margin:3px 0;letter-spacing:0.5px;');
+    receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1px solid black;margin:4px 0;');
+    receipt.querySelectorAll('.rcp-section-hdr').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:6px 0 3px 0;');
+    receipt.querySelectorAll('.rcp-row').forEach(el=>el.style.cssText='display:flex;font-size:9pt;margin:2px 0;line-height:1.6;');
+    receipt.querySelectorAll('.lbl').forEach(el=>el.style.cssText='font-weight:bold;width:20mm;flex-shrink:0;');
+    receipt.querySelectorAll('.col').forEach(el=>el.style.cssText='margin-right:3px;font-weight:bold;');
+    receipt.querySelectorAll('.rcp-butiran-lbl').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:8px 0 4px 0;');
+    receipt.querySelectorAll('.rcp-butiran-val').forEach(el=>el.style.cssText='font-size:9pt;min-height:14mm;margin-bottom:5px;word-break:break-word;line-height:1.8;');
+    receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
+    receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
+    receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
-    const{jsPDF}=window.jspdf;
-    const imgData=canvas.toDataURL('image/png');
-    const pdfW=100;
-    const pdfH=(canvas.height*pdfW)/canvas.width;
-
-   
-    const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
-    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-    pdf.addPage([pdfW,pdfH],'portrait'); 
-    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-    pdf.save('bil-'+inputNo+'.pdf');
-
+            const{jsPDF}=window.jspdf;
+            const imgData=canvas.toDataURL('image/png');
+            const pdfW=100;
+            const pdfH=(canvas.height*pdfW)/canvas.width;
+            const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
+            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+            pdf.addPage([pdfW,pdfH],'portrait');
+            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+            pdf.save('bil-'+inputNo+'.pdf');
             receipt.style.cssText='display:none;';
-          
-
-   const current=parseInt(inputNo)||1;
-document.getElementById('n_no').value=current+1;
-manualEdit=false;
-clearForm();
+            const current=parseInt(inputNo)||1;
+            document.getElementById('n_no').value=current+1;
+            manualEdit=false;
+            clearForm();
         });
     },300);
 }
@@ -300,5 +310,83 @@ function clearForm(){
     document.getElementById('pay_type').value='TUNAI';
 }
 </script>
+
+<style>
+#qr-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.72);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 0.32s ease;
+}
+#qr-modal{
+    background:rgba(15,23,42,0.95);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    padding:36px 32px 28px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.04) inset;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    max-width:500px;
+    width:92%;
+    transform:translateY(20px) scale(0.95);
+    opacity:0;
+    transition:transform 0.32s cubic-bezier(.34,1.56,.64,1),opacity 0.32s ease;
+    position:relative;
+}
+#qr-close{
+    position:absolute;
+    top:14px;
+    right:18px;
+    font-size:18px;
+    color:#64748b;
+    cursor:pointer;
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    transition:all .2s;
+}
+#qr-close:hover{
+    background:rgba(255,255,255,0.08);
+    color:#f1f5f9;
+}
+#qr-title{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:2px;
+    color:#94a3b8;
+    text-align:center;
+}
+#qr-img-wrap{
+    padding:20px;
+    width:100%;
+    box-sizing:border-box;
+}
+#qr-img{
+    width:100%;
+    height:auto;
+    max-width:420px;
+    display:block;
+    object-fit:contain;
+}
+#qr-hint{
+    font-size:11.5px;
+    color:#475569;
+    text-align:center;
+    letter-spacing:0.3px;
+}
+</style>
+
 </body>
 </html>
