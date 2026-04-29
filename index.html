@@ -256,7 +256,7 @@ async function s_img(){
     const data=getFormData();
     const receipt=document.getElementById('receipt');
     const inputNo=document.getElementById('n_no').value;
-    await saveToSheets(data);
+     saveToSheets(data);
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
     receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
     receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
