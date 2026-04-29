@@ -21,26 +21,26 @@
         </div>
         <div class="input-group full">
             <label>Staff Name</label>
-            <input type="text" id="staff" placeholder="Staff name">
+            <input type="text" id="staff" value="AIMAN" placeholder="Staff name">
         </div>
 
         <div class="section-label">SENDER</div>
         <div class="input-group full"><label>Name</label><input type="text" id="s_n" placeholder="Sender name"></div>
         <div class="input-group full"><label>Phone No.</label><input type="text" id="s_p" placeholder="Sender phone"></div>
         <div class="input-group full">
-            <label>Address</label>
-            <select id="s_a_sel" onchange="h_addr('s')">
-                <option value="">-- Select Address --</option>
-                <option value="TWU">TWU</option>
-                <option value="KGU">KGU</option>
-                <option value="SDK">SDK</option>
-                <option value="K.K">K.K</option>
-                <option value="L.D">L.D</option>
-                <option value="K.MAS">K.MAS</option>
-                <option value="NBWN">NBWN</option>
-            </select>
-            <input type="text" id="s_a" placeholder="Or type address here" style="margin-top:6px;">
-        </div>
+    <label>Address</label>
+    <select id="s_a_sel" onchange="h_addr('s')">
+        <option value="">-- Select Address --</option>
+        <option value="TWU" selected>TWU</option>
+        <option value="KGU">KGU</option>
+        <option value="SDK">SDK</option>
+        <option value="K.K">K.K</option>
+        <option value="L.D">L.D</option>
+        <option value="K.MAS">K.MAS</option>
+        <option value="NBWN">NBWN</option>
+    </select>
+    <input type="text" id="s_a" placeholder="Or type address here" style="margin-top:6px;">
+</div>
 
         <div class="section-label">RECEIVER</div>
         <div class="input-group full"><label>Name</label><input type="text" id="r_n" placeholder="Receiver name"></div>
@@ -49,7 +49,7 @@
             <label>Address</label>
             <select id="r_a_sel" onchange="h_addr('r')">
                 <option value="">-- Select Address --</option>
-                <option value="TWU">TWU</option>
+                <option value="TWU" selected>TWU</option>
                 <option value="KGU">KGU</option>
                 <option value="SDK">SDK</option>
                 <option value="K.K">K.K</option>
@@ -140,6 +140,8 @@
 const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzM_HfWi3_4T9oHTNFREURfd5jm9HG05FVlhJ4blTN0bNNP0Mg6TESv8ldadrleNweAxA/exec";
 
 const dateInput=document.getElementById('t_date');
+document.getElementById('s_a_sel').value = "TWU";
+h_addr('s');
 const now=new Date();
 dateInput.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
 
@@ -256,7 +258,7 @@ async function s_img(){
     const data=getFormData();
     const receipt=document.getElementById('receipt');
     const inputNo=document.getElementById('n_no').value;
-     saveToSheets(data);
+    saveToSheets(data); 
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
     receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
     receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
@@ -299,8 +301,8 @@ async function s_img(){
 function clearForm(){
     document.getElementById('s_n').value='';
     document.getElementById('s_p').value='';
-    document.getElementById('s_a').value='';
-    document.getElementById('s_a_sel').value='';
+    document.getElementById('s_a_sel').value='TWU';
+h_addr('s');
     document.getElementById('r_n').value='';
     document.getElementById('r_p').value='';
     document.getElementById('r_a').value='';
