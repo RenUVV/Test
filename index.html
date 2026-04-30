@@ -31,8 +31,8 @@
     <label>Address</label>
     <select id="s_a_sel" onchange="h_addr('s')">
         <option value="">-- Select Address --</option>
-        <option value="TWU" selected>TWU</option>
-        <option value="KGU">KGU</option>
+        <option value="TWU">TWU</option>
+<option value="KGU" selected>KGU</option>
         <option value="SDK">SDK</option>
         <option value="K.K">K.K</option>
         <option value="L.D">L.D</option>
@@ -129,7 +129,7 @@
     <div class="rcp-footer">
         <div class="rcp-dicetak">DICETAK OLEH : <span id="p_s"></span></div>
         <div style="margin-top:20px;">TERIMA KASIH</div>
-        <div style="font-size:13pt;font-weight:bold;">NUR GROUP</div>
+        <div style="font-size:11pt;font-weight:bold;">NUR GROUP</div>
     </div>
 </div>
 
@@ -142,6 +142,8 @@ const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzM_HfWi3_4T9oHTN
 const dateInput=document.getElementById('t_date');
 document.getElementById('s_a_sel').value = "TWU";
 h_addr('s');
+document.getElementById('r_a_sel').value = "KGU";
+h_addr('r');
 const now=new Date();
 dateInput.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
 
@@ -268,7 +270,7 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-title').forEach(el=>el.style.cssText='text-align:center;font-size:11.5pt;font-weight:bold;margin:4px 0 2px 0;letter-spacing:0.3px;');
     receipt.querySelectorAll('.rcp-nobil-row').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:9pt;font-weight:bold;margin:5px 0;');
     receipt.querySelectorAll('.rcp-bayaran').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;text-align:center;margin:3px 0;letter-spacing:0.5px;');
-    receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1px solid black;margin:4px 0;');
+    receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1.5px solid black;margin:4px 0;');
     receipt.querySelectorAll('.rcp-section-hdr').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:6px 0 3px 0;');
     receipt.querySelectorAll('.rcp-row').forEach(el=>el.style.cssText='display:flex;font-size:9pt;margin:2px 0;line-height:1.6;');
     receipt.querySelectorAll('.lbl').forEach(el=>el.style.cssText='font-weight:bold;width:20mm;flex-shrink:0;');
