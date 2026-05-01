@@ -363,6 +363,26 @@ document.addEventListener('keydown', function(e) {
     });
 });
 
+
+['s_p', 's_a', 'r_p', 'r_a', 'desc', 'prc'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+        const pos = this.selectionStart;
+        this.value = this.value.toUpperCase();
+        this.setSelectionRange(pos, pos);
+    });
+});
+
+
+['s_n', 'r_n', 'staff'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+        const pos = this.selectionStart;
+        this.value = this.value.replace(/\b\w/g, function(c) {
+            return c.toUpperCase();
+        });
+        this.setSelectionRange(pos, pos);
+    });
+});
+
 window.addEventListener('load', function() {
     setTimeout(function() {
         document.getElementById('s_n').focus();
