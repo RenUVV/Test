@@ -316,7 +316,7 @@ h_addr('s');
 
 const fields = [
   'n_no', 't_date', 'staff',
-  's_n', 's_p', 's_a_sel', 's_a',
+  's_n', 's_p', 's_a',
   'r_n', 'r_p', 'r_a_sel', 'r_a',
   'desc', 'pay_type', 'prc',
   'btn_print', 'btn_save', 'btn_qr', 'btn_dashboard'
@@ -344,6 +344,13 @@ document.addEventListener('keydown', function(e) {
     active.click();
   }
 });
+
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.getElementById('s_n').focus();
+    }, 70);
+});
+
 </script>
 
 <style>
