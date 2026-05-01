@@ -74,10 +74,10 @@
             <label>Amount (RM)</label>
             <input type="number" id="prc" placeholder="0.00" step="0.01">
         </div>
-        <button onclick="p_t()">PRINT</button>
-        <button class="btn-img" onclick="s_img()">SAVE</button>
-        <button class="btn-qr" onclick="toggle_qr()">QR</button>
-        <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">DASHBOARD</button>
+        <button id="btn_print" onclick="p_t()">PRINT</button>
+<button id="btn_save" class="btn-img" onclick="s_img()">SAVE</button>
+<button id="btn_qr" class="btn-qr" onclick="toggle_qr()">QR</button>
+<button id="btn_dashboard" class="btn-dashboard" onclick="window.location.href='dashboard.html'">DASHBOARD</button>
     </div>
 </div>
 
@@ -313,6 +313,37 @@ h_addr('s');
     document.getElementById('prc').value='';
     document.getElementById('pay_type').value='TUNAI';
 }
+
+const fields = [
+  'n_no', 't_date', 'staff',
+  's_n', 's_p', 's_a_sel', 's_a',
+  'r_n', 'r_p', 'r_a_sel', 'r_a',
+  'desc', 'pay_type', 'prc',
+  'btn_print', 'btn_save', 'btn_qr', 'btn_dashboard'
+];
+
+document.addEventListener('keydown', function(e) {
+  const active = document.activeElement;
+  const idx = fields.indexOf(active.id);
+  if (idx === -1) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = document.getElementById(fields[idx + 1]);
+    if (next) next.focus();
+  }
+
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const prev = document.getElementById(fields[idx - 1]);
+    if (prev) prev.focus();
+  }
+
+  if (e.key === 'Enter' && active.tagName === 'BUTTON') {
+    e.preventDefault();
+    active.click();
+  }
+});
 </script>
 
 <style>
@@ -390,7 +421,10 @@ h_addr('s');
     text-align:center;
     letter-spacing:0.3px;
 }
+
+
 </style>
 
 </body>
 </html>
+
