@@ -304,7 +304,7 @@ function clearForm(){
     document.getElementById('s_n').value='';
     document.getElementById('s_p').value='';
     document.getElementById('s_a_sel').value='TWU';
-h_addr('s');
+    h_addr('s');
     document.getElementById('r_n').value='';
     document.getElementById('r_p').value='';
     document.getElementById('r_a').value='';
@@ -312,8 +312,8 @@ h_addr('s');
     document.getElementById('desc').value='';
     document.getElementById('prc').value='';
     document.getElementById('pay_type').value='TUNAI';
+    setTimeout(function(){ document.getElementById('s_n').focus(); }, 100);
 }
-
 const fields = [
   'n_no', 't_date', 'staff',
   's_n', 's_p', 's_a',
