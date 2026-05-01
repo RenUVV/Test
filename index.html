@@ -345,6 +345,24 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+
+['r_a_sel', 'pay_type'].forEach(function(id) {
+    const el = document.getElementById(id);
+    el.addEventListener('change', function() {
+        const idx = fields.indexOf(id);
+        const next = document.getElementById(fields[idx + 1]);
+        if (next) next.focus();
+    });
+    el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const idx = fields.indexOf(id);
+            const next = document.getElementById(fields[idx + 1]);
+            if (next) next.focus();
+        }
+    });
+});
+
 window.addEventListener('load', function() {
     setTimeout(function() {
         document.getElementById('s_n').focus();
