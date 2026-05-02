@@ -239,7 +239,7 @@ async function p_t(){
     if(!fill_receipt())return;
     const data=getFormData();
     const current=parseInt(document.getElementById('n_no').value)||1;
-    saveToSheets(data);
+     saveToSheets(data);
     const receipt=document.getElementById('receipt');
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
     receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
@@ -259,7 +259,7 @@ async function p_t(){
     receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
     receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
     receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
-    const printWin=window.open('','_blank');
+    const printWin = window.open('','_blank');
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
             const{jsPDF}=window.jspdf;
@@ -281,14 +281,12 @@ async function p_t(){
     },300);
 }
 
-
-
 async function s_img(){
     if(!fill_receipt())return;
     const data=getFormData();
     const receipt=document.getElementById('receipt');
     const inputNo=document.getElementById('n_no').value;
-    saveToSheets(data);
+    saveToSheets(data); 
     receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
     receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
     receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
@@ -299,6 +297,7 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-nobil-row').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:9pt;font-weight:bold;margin:5px 0;');
     receipt.querySelectorAll('.rcp-bayaran').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;text-align:center;margin:3px 0;letter-spacing:0.5px;');
     receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1.5px solid black;margin:4px 0;');
+    receipt.querySelectorAll('.rcp-section-hdr').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:6px 0 3px 0;');
     receipt.querySelectorAll('.rcp-row').forEach(el=>el.style.cssText='display:flex;font-size:9pt;margin:2px 0;line-height:1.6;');
     receipt.querySelectorAll('.lbl').forEach(el=>el.style.cssText='font-weight:bold;width:20mm;flex-shrink:0;');
     receipt.querySelectorAll('.col').forEach(el=>el.style.cssText='margin-right:3px;font-weight:bold;');
@@ -307,31 +306,17 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
     receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
     receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
-    const imgWin=window.open('','_blank');
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
-            const combined=document.createElement('canvas');
-            combined.width=canvas.width;
-            combined.height=canvas.height*2;
-            const ctx=combined.getContext('2d');
-            ctx.fillStyle='#ffffff';
-            ctx.fillRect(0,0,combined.width,combined.height);
-            ctx.drawImage(canvas,0,0);
-            ctx.drawImage(canvas,0,canvas.height);
-            const combinedData=combined.toDataURL('image/jpeg',0.92);
-            imgWin.document.write('<img src="'+combinedData+'" style="width:100%;display:block;">');
-            imgWin.document.close();
-            receipt.style.cssText='display:none;';
-            const current=parseInt(inputNo)||1;
-            document.getElementById('n_no').value=current+1;
-            manualEdit=false;
-            clearForm();
-        });
-    },300);
-}
-
-
-
+            const{jsPDF}=window.jspdf;
+            const imgData=canvas.toDataURL('image/png');
+            const pdfW=100;
+            const pdfH=(canvas.height*pdfW)/canvas.width;
+            const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
+            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+            pdf.addPage([pdfW,pdfH],'portrait');
+            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+            pdf.save('bil-'+inputNo+'.pdf');
             receipt.style.cssText='display:none;';
             const current=parseInt(inputNo)||1;
             document.getElementById('n_no').value=current+1;
