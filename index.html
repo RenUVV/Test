@@ -308,11 +308,20 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
-            const imgData=canvas.toDataURL('image/jpeg', 0.92);
-const link=document.createElement('a');
-link.download='bil-'+inputNo+'.jpg';
-link.href=imgData;
-link.click();
+const imgData=canvas.toDataURL('image/jpeg', 0.92);
+
+const link1=document.createElement('a');
+link1.download='bil-'+inputNo+'-1.jpg';
+link1.href=imgData;
+link1.click();
+
+setTimeout(function(){
+    const link2=document.createElement('a');
+    link2.download='bil-'+inputNo+'-2.jpg';
+    link2.href=imgData;
+    link2.click();
+},500);
+
 
             receipt.style.cssText='display:none;';
             const current=parseInt(inputNo)||1;
