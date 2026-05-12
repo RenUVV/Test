@@ -296,12 +296,12 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
     cursor: pointer;
     font-size: 16px;
     padding: 4px;
-    margin: 0 auto; 
+    margin: 0 auto;
     display: block;
 }
 
 .delete-btn:hover {
-    color: #dc2626; 
+    color: #dc2626;
     transform: scale(1.1);
 }
 
@@ -481,39 +481,36 @@ function load(){
   });
 }
 
-function copyNum(btn, num) {
-  var str = String(num);
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(str).then(function() {
-      btn.classList.add('copied');
-      setTimeout(function(){ btn.classList.remove('copied'); }, 1500);
-    }).catch(function() {
-      fallbackCopy(btn, str);
-    });
-  } else {
-    fallbackCopy(btn, str);
-  }
-}
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  var num = String(btn.getAttribute('data-num') || '');
+  if (!num) return;
 
-function fallbackCopy(btn, str) {
   var ta = document.createElement('textarea');
-  ta.value = str;
-  ta.style.position = 'fixed';
-  ta.style.top = '0';
-  ta.style.left = '0';
-  ta.style.opacity = '0';
+  ta.value = num;
+  ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;border:none;outline:none;';
   document.body.appendChild(ta);
   ta.focus();
   ta.select();
-  try {
-    document.execCommand('copy');
+  ta.setSelectionRange(0, 99999);
+
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta);
+
+  if (ok) {
     btn.classList.add('copied');
     setTimeout(function(){ btn.classList.remove('copied'); }, 1500);
-  } catch(e) {
-    alert('Copy failed. Number: ' + str);
+  } else if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(num).then(function(){
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.classList.remove('copied'); }, 1500);
+    }).catch(function(){ alert('Gagal copy. No: ' + num); });
+  } else {
+    alert('Gagal copy. No: ' + num);
   }
-  document.body.removeChild(ta);
-}
+});
 
 function renderTable(){
   const tb=document.getElementById('tbody');
@@ -547,7 +544,7 @@ function renderTable(){
     <td><span class="pay-badge ${r[10]}">${r[10]}</span></td>
     <td><strong>RM ${parseFloat(r[11]||0).toFixed(2)}</strong></td>
     <td><button class="delete-btn" onclick="showDeleteModal('${r[0]}', '${r[1]}')">✕</button></td>
-    <td><button class="copy-btn" onclick="copyNum(this, '${r[7]}')" title="Copy receiver number">
+    <td><button class="copy-btn" data-num="${r[7]}" title="Copy receiver number">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
       </svg>
