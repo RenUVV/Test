@@ -332,7 +332,7 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
     receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
     receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
-        receipt.querySelectorAll('#p_driver').forEach(el=>el.style.cssText='font-size:9pt;text-align:left;margin-top:16px;font-weight:bold;max-width:65%;word-break:break-all;');
+        receipt.querySelectorAll('#p_driver').forEach(el=>el.style.cssText='font-size:9pt;text-align:left;margin-top:30px;font-weight:bold;max-width:65%;word-break:break-all;');
     setTimeout(async()=>{
                 html2canvas(receipt,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
             const imgData=canvas.toDataURL('image/jpeg',0.95);
