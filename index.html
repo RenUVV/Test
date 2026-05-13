@@ -15,28 +15,28 @@
             <label>Bill No.</label>
             <input type="number" id="n_no" placeholder="Auto...">
         </div>
-        <div class="input-group">
+                <div class="input-group">
             <label>Date</label>
             <input type="date" id="t_date">
         </div>
-                <div class="input-group full">
+               <div class="input-group full">
             <label>Staff Name</label>
             <input type="text" id="staff" value="AIMAN" placeholder="Staff name">
         </div>
                 <div class="input-group full">
             <label>Driver</label>
-            <div style="display:flex;gap:8px;align-items:center;">
-                <select id="driver_name" onchange="onDriverChange()" style="flex:2;">
-                    <option value="">-- Choose Driver --</option>
-                    <option value="IRFAN">IRFAN | 0172950438</option>
-                    <option value="HARIS">HARIS | 01112099667</option>
-                    <option value="AR">AR | 0138019667</option>
-                    <option value="ABE">ABE | 0175859667</option>
-                    <option value="FARHAN">FARHAN | 0124535657</option>
+            <div style="display:flex;gap:6px;align-items:center;">
+                <select id="driver_name" onchange="onDriverChange()" style="flex:1;font-size:13px;padding:10px 12px;">
+                    <option value="">-- Select --</option>
+                   <option value="IRFAN">IRFAN</option>
+                    <option value="HARIS">HARIS</option>
+                    <option value="AR">AR</option>
+                    <option value="ABE">ABE</option>
+                    <option value="FARHAN">FARHAN</option>
                 </select>
-                <input type="text" id="driver_num" placeholder="No. telefon" readonly style="flex:1;background:#0e1627;cursor:not-allowed;">
-                <label style="display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;font-size:12px;color:#cbd5e1;">
-                    <input type="checkbox" id="driver_check" onchange="saveDriverState()" style="width:auto;accent-color:#22c55e;"> Aktif
+                <input type="text" id="driver_num" placeholder="No." readonly style="flex:0.7;font-size:12px;padding:10px 10px;background:#0e1627;cursor:not-allowed;">
+                <label style="cursor:pointer;margin:0;">
+                    <input type="checkbox" id="driver_check" onchange="saveDriverState()" style="width:12px;height:12px;accent-color:#334155;cursor:pointer;margin:0;">
                 </label>
             </div>
         </div>
@@ -231,7 +231,7 @@ function fill_receipt(){
     const driverNum = localStorage.getItem('driverNum') || '';
     const driverActive = localStorage.getItem('driverActive') || '';
     if (driverName && driverActive === '1') {
-        document.getElementById('p_driver').innerText = 'DRIVER: ' + driverName.toUpperCase() + ' | ' + driverNum;
+                document.getElementById('p_driver').innerText = 'DRIVER : ' + driverName.toUpperCase() + ' | ' + driverNum;
     } else {
         document.getElementById('p_driver').innerText = '';
     }
@@ -333,7 +333,7 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
     receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
         receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
-    receipt.querySelectorAll('#p_driver').forEach(el=>el.style.cssText='font-size:8.5pt;text-align:left;margin-top:4px;font-weight:bold;');
+        receipt.querySelectorAll('#p_driver').forEach(el=>el.style.cssText='font-size:8pt;text-align:left;margin-top:12px;font-weight:bold;max-width:65%;word-break:break-all;');
     setTimeout(async()=>{
         html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
             const imgData=canvas.toDataURL('image/jpeg',0.95);
@@ -444,14 +444,16 @@ const driverNumbers = {
 function onDriverChange(){
     const name = document.getElementById('driver_name').value;
     const numInput = document.getElementById('driver_num');
+    const checkBox = document.getElementById('driver_check');
     if (name && driverNumbers[name]) {
         numInput.value = driverNumbers[name];
+        checkBox.checked = true;
     } else {
         numInput.value = '';
+        checkBox.checked = false;
     }
     saveDriverState();
 }
-
 function saveDriverState(){
     const name = document.getElementById('driver_name').value;
     const num = document.getElementById('driver_num').value;
