@@ -437,7 +437,7 @@ box-shadow:0 15px 40px rgba(0,0,0,0.6);
 
 <script>
 
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzM_HfWi3_4T9oHTNFREURfd5jm9HG05FVlhJ4blTN0bNNP0Mg6TESv8ldadrleNweAxA/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzPy5Tl1p0lRJJNwhXYsICMd-6tEJBTDkdbh27R7b7XHa4jrXm_552XxmgsXQHZqEjpfg/exec";
 
 let data=[];
 let itemToDelete = null;
@@ -648,7 +648,10 @@ function confirmReset(){
   .catch(()=>load());
 }
 
-load();
+function autoDoneCheck() {
+  fetch(SCRIPT_URL + "?action=autoDone").then(() => load());
+}
+autoDoneCheck();
 </script>
 
 </body>
