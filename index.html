@@ -26,15 +26,16 @@
         <div class="input-group full">
     <label>No. BAS</label>
     <div style="display:flex;gap:6px;align-items:center;">
-        <select id="no_bas" onchange="onBasChange()" style="flex:1;font-size:13px;padding:10px 12px;">
-            <option value="">-- Select --</option>
-            <option value="SB 5657 G">SB 5657 G</option>
-            <option value="SU 9667 J">SU 9667 J</option>
-            <option value="SU 9667 K">SU 9667 K</option>
-            <option value="SD 9667 T">SD 9667 T</option>
-            <option value="SMF 9667">SMF 9667</option>
-            <option value="SW 9667">SW 9667</option>
-        </select>
+       <select id="no_bas" onchange="onBasChange()" style="flex:1;font-size:13px;padding:10px 12px;">
+    <option value="">-- Select --</option>
+    <option value="SB 5657 G">SB 5657 G</option>
+    <option value="SU 9667 J">SU 9667 J</option>
+    <option value="SU 9667 K">SU 9667 K</option>
+    <option value="SD 9667 T">SD 9667 T</option>
+    <option value="SK 9667 G">SK 9667 G</option>   
+    <option value="SMF 9667">SMF 9667</option>
+    <option value="SW 9667">SW 9667</option>
+</select>
         <label style="cursor:pointer;margin:0;">
             <input type="checkbox" id="bas_check" onchange="saveBasState()" style="width:12px;height:12px;accent-color:#334155;cursor:pointer;margin:0;">
         </label>
@@ -156,7 +157,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbzPy5Tl1p0lRJJNwhXYsICMd-6tEJBTDkdbh27R7b7XHa4jrXm_552XxmgsXQHZqEjpfg/exec";
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxuXSVvOR9jV7_Fdla0WK_3vtRc20TIrhFKBVvEvelWAlvdWk8MvjZlsGRBOyhdSvPU_w/exec";
 
 const dateInput=document.getElementById('t_date');
 document.getElementById('s_a_sel').value = "TWU";
@@ -467,6 +468,7 @@ window.addEventListener('load', function() {
         document.getElementById('s_n').focus();
     }, 70);
 });
+
 </script>
 
 <style>
