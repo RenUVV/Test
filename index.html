@@ -145,11 +145,19 @@
     <div class="rcp-jumlah">JUMLAH : RM <span id="p_p"></span></div>
     <hr class="line-solid">
     <div class="rcp-footer">
-        <div class="rcp-dicetak">NAMA STAF : <span id="p_s"></span></div>
-        <div style="margin-top:20px;">TERIMA KASIH</div>
+        <div class="rcp-sign-row" style="position:relative;margin-top:10px;">
+    <div class="rcp-dicetak">NAMA STAF : <span id="p_s"></span></div>
+    <div style="position:absolute;right:0;top:0;width:90px;text-align:center;">
+        <div style="height:40px;"></div>
+        <div style="border-bottom:1px solid #000;width:70px;margin:0 auto;"></div>
+        <div style="font-size:7pt;margin-top:2px;">T/TANGAN</div>
+    </div>
+</div>
+<div style="margin-top:20px;">TERIMA KASIH</div>
         <div style="font-size:11pt;font-weight:bold;">NUR GROUP</div>
                 <div style="border-top:1px dashed #000;margin-top:14px;padding-top:6px;"></div>
 <div style="font-size:9pt;text-align:left;font-weight:bold;" id="p_bas"></div>
+<div style="font-size:8pt;text-align:center;margin-top:10px;">Pihak Syarikat tidak bertanggungjawab sekiranya barang tidak diambil dalam tempoh 1 minggu</div>
     </div>
 </div>
 
@@ -334,6 +342,7 @@ async function s_img(){
     receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
     receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
                 receipt.querySelectorAll('#p_bas').forEach(el=>el.style.cssText='font-size:9pt;text-align:left;margin-top:18px;font-weight:bold;');
+                receipt.querySelectorAll('.rcp-footer > div:last-child').forEach(el=>el.style.cssText='font-size:8pt;text-align:center;margin-top:10px;color:#000;');
     setTimeout(async()=>{
                 html2canvas(receipt,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
             const imgData=canvas.toDataURL('image/jpeg',0.95);
