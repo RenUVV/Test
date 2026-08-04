@@ -507,23 +507,23 @@ async function p_t(){
         receipt.querySelectorAll('#p_bas').forEach(el=>el.style.cssText='font-size:9pt;text-align:left;margin-top:18px;font-weight:bold;');
         receipt.querySelectorAll('.rcp-footer > div:last-child').forEach(el=>el.style.cssText='font-size:8pt;text-align:center;margin-top:8px;color:#000;');  
         const printWin = window.open('','_blank');
-    setTimeout(async()=>{
-        html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
-            const{jsPDF}=window.jspdf;
-            const imgData=canvas.toDataURL('image/png');
-            const pdfW=100;
-            const pdfH=(canvas.height*pdfW)/canvas.width;
-            const pdf=new jsPDF({unit:'mm',format:[pdfW,pdfH],orientation:'portrait'});
-            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-            pdf.addPage([pdfW,pdfH],'portrait');
-            pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
-            const blob=pdf.output('blob');
-            const url=URL.createObjectURL(blob);
-            printWin.location.href=url;
-            receipt.style.cssText='display:none;';
-            document.getElementById('n_no').value=current+1;
-            manualEdit=false;
-            clearForm();
+        setTimeout(async()=>{
+                html2canvas(receipt,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
+            canvas.toBlob(function(blob){
+                const url=URL.createObjectURL(blob);
+                const link=document.createElement('a');
+                link.download='bil-'+inputNo+'.jpg';
+                link.href=url;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(()=>URL.revokeObjectURL(url),1000);
+                receipt.style.cssText='display:none;';
+                const current=parseInt(inputNo)||1;
+                document.getElementById('n_no').value=current+1;
+                manualEdit=false;
+                clearForm();
+            },'image/jpeg',0.95);
         });
     },300);
 }
