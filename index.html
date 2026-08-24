@@ -176,7 +176,12 @@
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Staff Name</label>
-            <input type="text" id="staff" value="AIMAN" placeholder="Staff name" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all">
+        <select id="staff" onchange="saveStaffState()" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer">
+    <option value="AIMAN">AIMAN</option>
+    <option value="SARIN">SARIN</option>
+</select>
+
+
         </div>
 
         <div class="input-group">
@@ -581,8 +586,8 @@ function clearForm(){
     h_addr('s');
     document.getElementById('r_n').value='';
     document.getElementById('r_p').value='';
-    document.getElementById('r_a').value='';
-    document.getElementById('r_a_sel').value='';
+    document.getElementById('r_a_sel').value='KGU';
+h_addr('r');
     document.getElementById('desc').value='';
     document.getElementById('prc').value='';
     document.getElementById('pay_type').value='TUNAI';
@@ -681,6 +686,10 @@ function saveBasState(){
     }
 }
 
+function saveStaffState(){
+    localStorage.setItem('staffName', document.getElementById('staff').value);
+}
+
 window.addEventListener('load', function() {
     const savedBas = localStorage.getItem('noBas') || '';
     const savedActive = localStorage.getItem('basActive') || '';
@@ -688,10 +697,15 @@ window.addEventListener('load', function() {
         document.getElementById('no_bas').value = savedBas;
         document.getElementById('bas_check').checked = (savedActive === '1');
     }
+    const savedStaff = localStorage.getItem('staffName');
+    if (savedStaff) {
+        document.getElementById('staff').value = savedStaff;
+    }
     setTimeout(function() {
         document.getElementById('s_n').focus();
     }, 70);
 });
+
 
 </script>
 
