@@ -383,11 +383,11 @@
         <span id="q_d"></span>
     </div>
     <div style="border-top:1px solid #000;margin:4px 0;"></div>
-    <div style="font-size:9px;line-height:1.3;"><b>DARI:</b> <span id="q_sn"></span> <span id="q_sp"></span></div>
-    <div style="font-size:9px;line-height:1.3;margin-top:2px;"><b>KEPADA:</b> <span id="q_rn"></span> <span id="q_rp"></span></div>
+    <div style="font-size:9px;line-height:1.3;"><b>DARI:</b> <span id="q_sn"></span> <span id="q_sp"></span> <b>(<span id="q_sa"></span>)</b></div>
+    <div style="font-size:9px;line-height:1.3;margin-top:2px;"><b>KEPADA:</b> <span id="q_rn"></span> <span id="q_rp"></span> <b>(<span id="q_ra"></span>)</b></div>
     <div style="border-top:1px solid #000;margin:4px 0;"></div>
     <div style="font-size:9px;font-weight:bold;">BARANG:</div>
-    <div id="q_desc" style="font-size:9px;line-height:1.3;height:44px;overflow:hidden;word-break:break-word;"></div>
+    <div id="q_desc" style="font-size:9px;line-height:1.3;height:34px;overflow:hidden;word-break:break-word;"></div>
     <div style="border-top:1px solid #000;margin:4px 0;"></div>
     <div style="display:flex;justify-content:space-between;align-items:flex-end;">
         <span id="q_bas" style="font-size:8px;font-weight:bold;"></span>
@@ -564,6 +564,8 @@ async function s_img(){
     document.getElementById('q_sp').innerText=data.telPengirim;
     document.getElementById('q_rn').innerText=data.namaPenerima;
     document.getElementById('q_rp').innerText=data.telPenerima;
+    document.getElementById('q_sa').innerText=data.alamatPengirim;
+    document.getElementById('q_ra').innerText=data.alamatPenerima;
     document.getElementById('q_desc').innerText=data.butiran;
     document.getElementById('q_p').innerText=data.jumlah;
     document.getElementById('q_bas').innerText=document.getElementById('p_bas').innerText;
