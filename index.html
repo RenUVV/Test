@@ -179,9 +179,11 @@
         <span id="p_d"></span>
     </div>
     <hr class="lbl-hr">
+    <div class="lbl-bayar">[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI&nbsp;&nbsp;[ <span id="p_chk_cod">&nbsp;</span> ] COD&nbsp;&nbsp;[ <span id="p_chk_acc">&nbsp;</span> ] ACC</div>
     <div class="lbl-line"><b>DARI:</b> <span id="p_si_n"></span> / <span id="p_si_p"></span></div>
     <div class="lbl-line"><b>KE:</b> <span id="p_ri_n"></span> / <span id="p_ri_p"></span></div>
     <div class="lbl-item"><b>ITEM:</b> <span id="p_desc"></span></div>
+    <div class="lbl-pay">[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI&nbsp;&nbsp;[ <span id="p_chk_cod">&nbsp;</span> ] COD&nbsp;&nbsp;[ <span id="p_chk_acc">&nbsp;</span> ] ACC</div>
     <div class="lbl-price">RM <span id="p_p"></span></div>
 </div>
 
@@ -244,6 +246,10 @@ function fill_receipt(){
     const ds=document.getElementById('desc').value.trim();
     if(!sn||!rn||!ds){alert("Sila isi nama pengirim, penerima dan butiran barang!");return false;}
     const d=new Date(dateInput.value+'T00:00:00');
+    const payType=document.getElementById('pay_type').value;
+    document.getElementById('p_chk_tunai').innerText=payType==='TUNAI'?'/':'\u00A0';
+    document.getElementById('p_chk_cod').innerText=payType==='COD'?'/':'\u00A0';
+    document.getElementById('p_chk_acc').innerText=payType==='ACC'?'/':'\u00A0';
     document.getElementById('p_n').innerText=document.getElementById('n_no').value;
     document.getElementById('p_d').innerText=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
     document.getElementById('p_si_n').innerText=sn.toUpperCase();
@@ -251,6 +257,10 @@ function fill_receipt(){
     document.getElementById('p_ri_n').innerText=rn.toUpperCase();
     document.getElementById('p_ri_p').innerText=document.getElementById('r_p').value.trim();
     document.getElementById('p_desc').innerText=ds.toUpperCase();
+    const payType=document.getElementById('pay_type').value;
+    document.getElementById('p_chk_tunai').innerText=payType==='TUNAI'?'/':'\u00A0';
+    document.getElementById('p_chk_cod').innerText=payType==='COD'?'/':'\u00A0';
+    document.getElementById('p_chk_acc').innerText=payType==='ACC'?'/':'\u00A0';
     document.getElementById('p_p').innerText=parseFloat(document.getElementById('prc').value||0).toFixed(2);
     return true;
 }
@@ -284,9 +294,11 @@ function styleLabel(){
     receipt.querySelectorAll('.lbl-company').forEach(el=>el.style.cssText='font-size:10px;font-weight:bold;text-align:center;letter-spacing:.2px;');
     receipt.querySelectorAll('.lbl-meta').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:8px;margin-top:3px;');
     receipt.querySelectorAll('.lbl-hr').forEach(el=>el.style.cssText='border:none;border-top:1px solid #000;margin:3px 0;');
+    receipt.querySelectorAll('.lbl-bayar').forEach(el=>el.style.cssText='font-size:8px;font-weight:bold;margin:2px 0;');
     receipt.querySelectorAll('.lbl-line').forEach(el=>el.style.cssText='font-size:9px;margin:2px 0;word-break:break-word;');
     receipt.querySelectorAll('.lbl-item').forEach(el=>el.style.cssText='font-size:9px;margin:2px 0;word-break:break-word;max-height:36px;overflow:hidden;');
-    receipt.querySelectorAll('.lbl-price').forEach(el=>el.style.cssText='font-size:12px;font-weight:bold;text-align:right;margin-top:3px;');
+    receipt.querySelectorAll('.lbl-pay').forEach(el=>el.style.cssText='font-size:8px;font-weight:bold;margin-top:4px;letter-spacing:.2px;');
+    receipt.querySelectorAll('.lbl-price').forEach(el=>el.style.cssText='font-size:12px;font-weight:bold;text-align:right;margin-top:2px;');
 }
 
 async function renderLabel(download){
