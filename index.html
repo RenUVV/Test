@@ -5,88 +5,223 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arsyila Bersaudara</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+              mono: ['JetBrains Mono', 'SF Mono', 'Monaco', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
     <style>
-      body { font-family: 'Inter', system-ui, sans-serif; background-color: #09090b; color: #fafafa; }
-      input[type="date"], input[type="number"], input[type="text"], select, textarea { color-scheme: dark; }
-      input[type="date"]{ max-width:100%; padding-right:12px; text-align:left; }
-      ::selection { background-color: #3f3f46; color: #fafafa; }
-      ::-webkit-scrollbar { width: 8px; height: 8px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-      ::-webkit-scrollbar-thumb:hover { background: #52525b; }
-      @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-      .btn-tactile { transition: all 0.15s ease; }
-      .btn-tactile:active { transform: scale(0.98); }
-      #qr-overlay{ display:none; position:fixed; inset:0; background:rgba(9,9,11,0.8); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:9999; align-items:center; justify-content:center; opacity:0; transition:opacity 0.32s ease; }
-      #qr-modal{ background:#18181b; border:1px solid #27272a; border-radius:16px; padding:32px 24px 24px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.8); display:flex; flex-direction:column; align-items:center; gap:16px; max-width:400px; width:92%; transform:translateY(20px) scale(0.95); opacity:0; transition:transform 0.32s cubic-bezier(.34,1.56,.64,1),opacity 0.32s ease; position:relative; }
-      #qr-close{ position:absolute; top:12px; right:12px; color:#71717a; cursor:pointer; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
-      #qr-title{ font-size:12px; font-weight:700; letter-spacing:0.15em; color:#a1a1aa; text-align:center; text-transform: uppercase; }
-      #qr-img-wrap{ padding:16px; width:100%; box-sizing:border-box; background: #ffffff; border-radius: 12px; }
-      #qr-img{ width:100%; height:auto; max-width:320px; display:block; margin: 0 auto; }
-      #qr-hint{ font-size:12px; color:#71717a; text-align:center; font-weight: 500; }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: #09090b;
+        color: #fafafa;
+      }
+
+      input[type="date"], input[type="number"], input[type="text"], select, textarea {
+        color-scheme: dark;
+      }
+      input[type="date"]{
+  max-width:100%;
+  padding-right:12px;
+  text-align:left;
+}
+
+
+      ::selection {
+        background-color: #3f3f46;
+        color: #fafafa;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3f3f46;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #52525b;
+      }
+
+      @keyframes fadein {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .btn-tactile {
+        transition: all 0.15s ease;
+      }
+      .btn-tactile:active {
+        transform: scale(0.98);
+      }
+
+      .input-focus {
+        transition: all 0.15s ease;
+      }
+      .input-focus:focus {
+        outline: none;
+        border-color: #52525b;
+        box-shadow: 0 0 0 2px #09090b, 0 0 0 4px #27272a;
+      }
+
+      #qr-overlay{
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(9,9,11,0.8);
+        backdrop-filter:blur(8px);
+        -webkit-backdrop-filter:blur(8px);
+        z-index:9999;
+        align-items:center;
+        justify-content:center;
+        opacity:0;
+        transition:opacity 0.32s ease;
+      }
+      #qr-modal{
+        background:#18181b;
+        border:1px solid #27272a;
+        border-radius:16px;
+        padding:32px 24px 24px;
+        box-shadow:0 25px 50px -12px rgba(0,0,0,0.8);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:16px;
+        max-width:400px;
+        width:92%;
+        transform:translateY(20px) scale(0.95);
+        opacity:0;
+        transition:transform 0.32s cubic-bezier(.34,1.56,.64,1),opacity 0.32s ease;
+        position:relative;
+      }
+      #qr-close{
+        position:absolute;
+        top:12px;
+        right:12px;
+        font-size:18px;
+        color:#71717a;
+        cursor:pointer;
+        width:32px;
+        height:32px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:50%;
+        transition:all .2s;
+      }
+      #qr-close:hover{
+        background:#27272a;
+        color:#fafafa;
+      }
+      #qr-title{
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:0.15em;
+        color:#a1a1aa;
+        text-align:center;
+        text-transform: uppercase;
+      }
+      #qr-img-wrap{
+        padding:16px;
+        width:100%;
+        box-sizing:border-box;
+        background: #ffffff;
+        border-radius: 12px;
+      }
+      #qr-img{
+        width:100%;
+        height:auto;
+        max-width:320px;
+        display:block;
+        object-fit:contain;
+        margin: 0 auto;
+      }
+      #qr-hint{
+        font-size:12px;
+        color:#71717a;
+        text-align:center;
+        font-weight: 500;
+      }
     </style>
-<base target="_blank">
 </head>
 <body class="bg-zinc-950 text-zinc-100 antialiased min-h-screen flex flex-col">
 
 <div class="container max-w-3xl mx-auto p-4 sm:p-6 w-full" style="animation: fadein 0.4s ease-out forwards;">
-
+    
     <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-5 sm:p-6 shadow-[0_1px_2px_rgba(0,0,0,0.3)] space-y-5">
-
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="input-group">
                 <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Bill No.</label>
-                <input type="number" id="n_no" placeholder="Auto..." class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 font-mono tabular-nums">
+                <input type="number" id="n_no" placeholder="Auto..." class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all font-mono tabular-nums">
             </div>
             <div class="input-group">
                 <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Date</label>
-                <input type="date" id="t_date" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer">
+                <input type="date" id="t_date" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer">
             </div>
         </div>
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Staff Name</label>
-            <select id="staff" onchange="saveStaffState()" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer">
-                <option value="AIMAN">AIMAN</option>
-                <option value="SARIN">SARIN</option>
-            </select>
+        <select id="staff" onchange="saveStaffState()" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer">
+    <option value="AIMAN">AIMAN</option>
+    <option value="SARIN">SARIN</option>
+</select>
+
+
         </div>
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">No. BAS</label>
             <div class="flex gap-3 items-center">
-                <select id="no_bas" onchange="onBasChange()" class="flex-1 px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer">
+                <select id="no_bas" onchange="onBasChange()" class="flex-1 px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer">
                     <option value="">-- Select --</option>
                     <option value="SB 5657 G">SB 5657 G</option>
                     <option value="SU 9667 J">SU 9667 J</option>
                     <option value="SU 9667 K">SU 9667 K</option>
                     <option value="SD 9667 T">SD 9667 T</option>
-                    <option value="SK 9667 G">SK 9667 G</option>
+                    <option value="SK 9667 G">SK 9667 G</option>   
                     <option value="SMF 9667">SMF 9667</option>
                     <option value="SW 9667">SW 9667</option>
                 </select>
                 <label class="flex items-center gap-2 cursor-pointer select-none px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg hover:bg-zinc-800 transition-colors">
-                    <input type="checkbox" id="bas_check" onchange="saveBasState()" class="w-4 h-4 rounded border-zinc-700 bg-zinc-900 cursor-pointer accent-emerald-600">
+                    <input type="checkbox" id="bas_check" onchange="saveBasState()" class="w-4 h-4 rounded border-zinc-700 text-emerald-600 focus:ring-emerald-600/20 bg-zinc-900 cursor-pointer accent-emerald-600">
                     <span class="text-xs font-medium text-zinc-400">Active</span>
                 </label>
             </div>
         </div>
 
         <div class="section-label mt-8 pt-6 border-t border-zinc-800">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400">Sender</h3>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+                <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                Sender
+            </h3>
         </div>
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Name</label>
-            <input type="text" id="s_n" placeholder="Sender name" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700">
+            <input type="text" id="s_n" placeholder="Sender name" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all">
         </div>
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Phone No.</label>
-            <input type="text" id="s_p" placeholder="Sender phone" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 font-mono">
+            <input type="text" id="s_p" placeholder="Sender phone" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all font-mono">
         </div>
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Address</label>
-            <select id="s_a_sel" onchange="h_addr('s')" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer mb-2">
+            <select id="s_a_sel" onchange="h_addr('s')" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer mb-2">
                 <option value="">-- Select Address --</option>
                 <option value="TWU">TWU</option>
                 <option value="KGU" selected>KGU</option>
@@ -96,24 +231,27 @@
                 <option value="K.MAS">K.MAS</option>
                 <option value="NBWN">NBWN</option>
             </select>
-            <input type="text" id="s_a" placeholder="Or type address here" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700">
+            <input type="text" id="s_a" placeholder="Or type address here" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all">
         </div>
 
         <div class="section-label mt-8 pt-6 border-t border-zinc-800">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400">Receiver</h3>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+                <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                Receiver
+            </h3>
         </div>
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Name</label>
-            <input type="text" id="r_n" placeholder="Receiver name" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700">
+            <input type="text" id="r_n" placeholder="Receiver name" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all">
         </div>
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Phone No.</label>
-            <input type="text" id="r_p" placeholder="Receiver phone" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 font-mono">
+            <input type="text" id="r_p" placeholder="Receiver phone" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all font-mono">
         </div>
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Address</label>
-            <select id="r_a_sel" onchange="h_addr('r')" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer mb-2">
+            <select id="r_a_sel" onchange="h_addr('r')" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer mb-2">
                 <option value="">-- Select Address --</option>
                 <option value="TWU" selected>TWU</option>
                 <option value="KGU">KGU</option>
@@ -123,22 +261,25 @@
                 <option value="K.MAS">K.MAS</option>
                 <option value="NBWN">NBWN</option>
             </select>
-            <input type="text" id="r_a" placeholder="Or type address here" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700">
+            <input type="text" id="r_a" placeholder="Or type address here" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all">
         </div>
 
         <div class="section-label mt-8 pt-6 border-t border-zinc-800">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400">Item & Payment</h3>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+                <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                Item & Payment
+            </h3>
         </div>
 
         <div class="input-group">
             <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Item Details</label>
-            <textarea id="desc" rows="3" placeholder="Item details" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 resize-none"></textarea>
+            <textarea id="desc" rows="3" placeholder="Item details" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all resize-none"></textarea>
         </div>
-
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="input-group">
                 <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Payment Type</label>
-                <select id="pay_type" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 cursor-pointer">
+                <select id="pay_type" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all cursor-pointer">
                     <option value="TUNAI">TUNAI</option>
                     <option value="COD">COD</option>
                     <option value="ACC">ACC</option>
@@ -146,15 +287,27 @@
             </div>
             <div class="input-group">
                 <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Amount (RM)</label>
-                <input type="number" id="prc" placeholder="0.00" step="0.01" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 font-mono tabular-nums">
+                <input type="number" id="prc" placeholder="0.00" step="0.01" class="w-full px-3 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-700 focus:border-zinc-600 transition-all font-mono tabular-nums">
             </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-zinc-800">
-            <button id="btn_print" onclick="p_t()" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-100 text-zinc-900 text-sm font-semibold hover:bg-white transition-colors">PRINT</button>
-            <button id="btn_save" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-500 transition-colors" onclick="s_img()">SAVE</button>
-            <button id="btn_qr" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500 transition-colors" onclick="toggle_qr()">QR</button>
-            <button id="btn_dashboard" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-800 text-zinc-100 text-sm font-semibold hover:bg-zinc-700 transition-colors border border-zinc-700" onclick="window.location.href='dashboard.html'">DASHBOARD</button>
+            <button id="btn_print" onclick="p_t()" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-100 text-zinc-900 text-sm font-semibold hover:bg-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                PRINT
+            </button>
+            <button id="btn_save" class="btn-img btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-500 transition-colors" onclick="s_img()">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                SAVE
+            </button>
+            <button id="btn_qr" class="btn-qr btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500 transition-colors" onclick="toggle_qr()">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                QR
+            </button>
+            <button id="btn_dashboard" class="btn-dashboard btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-zinc-800 text-zinc-100 text-sm font-semibold hover:bg-zinc-700 transition-colors border border-zinc-700" onclick="window.location.href='dashboard.html'">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                DASHBOARD
+            </button>
         </div>
     </div>
 </div>
@@ -173,21 +326,77 @@
 </div>
 
 <div id="receipt" style="display:none;">
-    <div class="lbl-company">SYARIKAT PENGANGKUTAN NUR</div>
-    <div class="lbl-meta">
-        <span>No.Bil: <span id="p_n"></span></span>
-        <span id="p_d"></span>
+    <div class="rcp-header">
+        <div class="rcp-company">ARSYILA BERSAUDARA TRAVEL &amp; TOURS SDN.BHD.</div>
+        <div class="rcp-address">TB 496, TINGKAT 1, BLOK Q, 91000 TAWAU, SABAH.</div>
+        <div class="rcp-tel">Tel: 012- 279 5657 (TWU) &nbsp; 012- 453 5657 (KGU)</div>
+        <div style="margin-top:8px;"></div>
     </div>
-    <hr class="lbl-hr">
-    <div class="lbl-bayar">[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI&nbsp;&nbsp;[ <span id="p_chk_cod">&nbsp;</span> ] COD&nbsp;&nbsp;[ <span id="p_chk_acc">&nbsp;</span> ] ACC</div>
-    <div class="lbl-line"><b>DARI:</b> <span id="p_si_n"></span> / <span id="p_si_p"></span></div>
-    <div class="lbl-line"><b>KE:</b> <span id="p_ri_n"></span> / <span id="p_ri_p"></span></div>
-    <div class="lbl-item"><b>ITEM:</b> <span id="p_desc"></span></div>
-    <div class="lbl-pay">[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI&nbsp;&nbsp;[ <span id="p_chk_cod">&nbsp;</span> ] COD&nbsp;&nbsp;[ <span id="p_chk_acc">&nbsp;</span> ] ACC</div>
-    <div class="lbl-price">RM <span id="p_p"></span></div>
+    <div class="rcp-title">RESIT KIRIMAN BARANG</div>
+    <div style="margin-top:8px;"></div>
+    <div class="rcp-nobil-row">
+        <span>No.Bil : <span id="p_n"></span></span>
+        <span>Tarikh : <span id="p_d"></span></span>
+    </div>
+    <div style="margin-top:8px;"></div>
+    <div class="rcp-bayaran">
+        Bayaran :
+        <span>[ <span id="p_chk_tunai">&nbsp;</span> ] TUNAI</span>
+        <span>[ <span id="p_chk_cod">&nbsp;</span> ] COD</span>
+        <span>[ <span id="p_chk_acc">&nbsp;</span> ] ACC</span>
+    </div>
+    <hr class="line-solid">
+    <div class="rcp-row"><span class="lbl">DARIPADA</span><span class="col">:</span><span id="p_si_n"></span></div>
+    <div class="rcp-row"><span class="lbl">TEL</span><span class="col">:</span><span id="p_si_p"></span></div>
+    <div class="rcp-row"><span class="lbl">ALAMAT</span><span class="col">:</span><span id="p_si_a"></span></div>
+    <div style="margin-top:8px;"></div>
+    <div class="rcp-row"><span class="lbl">KEPADA</span><span class="col">:</span><span id="p_ri_n"></span></div>
+    <div class="rcp-row"><span class="lbl">TEL</span><span class="col">:</span><span id="p_ri_p"></span></div>
+    <div class="rcp-row"><span class="lbl">ALAMAT</span><span class="col">:</span><span id="p_ri_a"></span></div>
+    <hr class="line-solid">
+    <div class="rcp-butiran-lbl">BUTIRAN BARANG :</div>
+    <div class="rcp-butiran-val" id="p_desc"></div>
+    <div class="rcp-jumlah">JUMLAH : RM <span id="p_p"></span></div>
+    <hr class="line-solid">
+    <div class="rcp-footer">
+        <div class="rcp-sign-row" style="position:relative;margin-top:20px;">
+    <div class="rcp-dicetak">NAMA STAF : <span id="p_s"></span></div>
+    <div style="position:absolute;right:0;top:0;width:90px;text-align:center;">
+        <div style="height:40px;"></div>
+        <div style="border-bottom:1px solid #000;width:70px;margin:0 auto;"></div>
+        <div style="font-size:7pt;margin-top:2px;">SIGN</div>
+    </div>
+</div>
+<div style="margin-top:14px;">TERIMA KASIH</div>
+<div style="font-size:11pt;font-weight:bold;">NUR GROUP</div>
+<div style="border-top:1px dashed #000;margin-top:10px;padding-top:5px;"></div>
+<div style="font-size:9pt;text-align:left;font-weight:bold;" id="p_bas"></div>
+<div style="font-size:9pt;text-align:center;margin-top:8px;">Pihak Syarikat tidak bertanggungjawab sekiranya barang tidak dituntut dalam tempoh <b>1</b> minggu</div>
+    </div>
+</div>
+
+<div id="receipt_small" style="display:none;width:227px;height:189px;box-sizing:border-box;padding:7px 9px;background:#ffffff;color:#000000;font-family:Arial,sans-serif;overflow:hidden;position:fixed;left:-9999px;top:0;">
+    <div style="text-align:center;font-size:11px;font-weight:bold;line-height:1.1;">SYARIKAT PENGANGKUTAN NUR</div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;font-weight:bold;margin-top:4px;">
+        <span>BIL: <span id="q_n"></span></span>
+        <span id="q_pay"></span>
+        <span id="q_d"></span>
+    </div>
+    <div style="border-top:1px solid #000;margin:4px 0;"></div>
+    <div style="font-size:9px;line-height:1.3;"><b>DARI:</b> <span id="q_sn"></span> <span id="q_sp"></span></div>
+    <div style="font-size:9px;line-height:1.3;margin-top:2px;"><b>KEPADA:</b> <span id="q_rn"></span> <span id="q_rp"></span></div>
+    <div style="border-top:1px solid #000;margin:4px 0;"></div>
+    <div style="font-size:9px;font-weight:bold;">BARANG:</div>
+    <div id="q_desc" style="font-size:9px;line-height:1.3;height:44px;overflow:hidden;word-break:break-word;"></div>
+    <div style="border-top:1px solid #000;margin:4px 0;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <span id="q_bas" style="font-size:8px;font-weight:bold;"></span>
+        <span style="font-size:12px;font-weight:bold;">RM <span id="q_p"></span></span>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxuXSVvOR9jV7_Fdla0WK_3vtRc20TIrhFKBVvEvelWAlvdWk8MvjZlsGRBOyhdSvPU_w/exec";
@@ -202,6 +411,7 @@ dateInput.value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'
 
 let manualEdit=false;
 const billInput=document.getElementById('n_no');
+
 billInput.addEventListener('input',function(){manualEdit=true;});
 
 (function fetchNext(){
@@ -245,23 +455,29 @@ function fill_receipt(){
     const rn=document.getElementById('r_n').value.trim();
     const ds=document.getElementById('desc').value.trim();
     if(!sn||!rn||!ds){alert("Sila isi nama pengirim, penerima dan butiran barang!");return false;}
-    const d=new Date(dateInput.value+'T00:00:00');
     const payType=document.getElementById('pay_type').value;
-    document.getElementById('p_chk_tunai').innerText=payType==='TUNAI'?'/':'\u00A0';
-    document.getElementById('p_chk_cod').innerText=payType==='COD'?'/':'\u00A0';
-    document.getElementById('p_chk_acc').innerText=payType==='ACC'?'/':'\u00A0';
+    const d=new Date(dateInput.value+'T00:00:00');
     document.getElementById('p_n').innerText=document.getElementById('n_no').value;
     document.getElementById('p_d').innerText=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
-    document.getElementById('p_si_n').innerText=sn.toUpperCase();
-    document.getElementById('p_si_p').innerText=document.getElementById('s_p').value.trim();
-    document.getElementById('p_ri_n').innerText=rn.toUpperCase();
-    document.getElementById('p_ri_p').innerText=document.getElementById('r_p').value.trim();
-    document.getElementById('p_desc').innerText=ds.toUpperCase();
-    const payType=document.getElementById('pay_type').value;
+    document.getElementById('p_s').innerText=(document.getElementById('staff').value||'STAF').toUpperCase();
     document.getElementById('p_chk_tunai').innerText=payType==='TUNAI'?'/':'\u00A0';
     document.getElementById('p_chk_cod').innerText=payType==='COD'?'/':'\u00A0';
     document.getElementById('p_chk_acc').innerText=payType==='ACC'?'/':'\u00A0';
+    document.getElementById('p_si_n').innerText=sn.toUpperCase();
+    document.getElementById('p_si_p').innerText=document.getElementById('s_p').value.trim();
+    document.getElementById('p_si_a').innerText=document.getElementById('s_a').value.trim().toUpperCase();
+    document.getElementById('p_ri_n').innerText=rn.toUpperCase();
+    document.getElementById('p_ri_p').innerText=document.getElementById('r_p').value.trim();
+    document.getElementById('p_ri_a').innerText=document.getElementById('r_a').value.trim().toUpperCase();
+    document.getElementById('p_desc').innerText=ds.toUpperCase();
     document.getElementById('p_p').innerText=parseFloat(document.getElementById('prc').value||0).toFixed(2);
+        const noBas = localStorage.getItem('noBas') || '';
+    const basActive = localStorage.getItem('basActive') || '';
+        if (noBas && basActive === '1') {
+        document.getElementById('p_bas').innerText = 'NO. BAS : ' + noBas.toUpperCase();
+    } else {
+        document.getElementById('p_bas').innerText = '';
+    }
     return true;
 }
 
@@ -284,61 +500,95 @@ function getFormData(){
     };
 }
 
-function saveToSheets(data){
+async function saveToSheets(data){
     try{ fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){}
 }
 
-function styleLabel(){
-    const receipt=document.getElementById('receipt');
-    receipt.style.cssText="display:block;width:227px;font-family:Arial,sans-serif;font-size:9px;color:#000;background:#fff;padding:6px 8px;box-sizing:border-box;position:fixed;left:-9999px;top:0;line-height:1.3;";
-    receipt.querySelectorAll('.lbl-company').forEach(el=>el.style.cssText='font-size:10px;font-weight:bold;text-align:center;letter-spacing:.2px;');
-    receipt.querySelectorAll('.lbl-meta').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:8px;margin-top:3px;');
-    receipt.querySelectorAll('.lbl-hr').forEach(el=>el.style.cssText='border:none;border-top:1px solid #000;margin:3px 0;');
-    receipt.querySelectorAll('.lbl-bayar').forEach(el=>el.style.cssText='font-size:8px;font-weight:bold;margin:2px 0;');
-    receipt.querySelectorAll('.lbl-line').forEach(el=>el.style.cssText='font-size:9px;margin:2px 0;word-break:break-word;');
-    receipt.querySelectorAll('.lbl-item').forEach(el=>el.style.cssText='font-size:9px;margin:2px 0;word-break:break-word;max-height:36px;overflow:hidden;');
-    receipt.querySelectorAll('.lbl-pay').forEach(el=>el.style.cssText='font-size:8px;font-weight:bold;margin-top:4px;letter-spacing:.2px;');
-    receipt.querySelectorAll('.lbl-price').forEach(el=>el.style.cssText='font-size:12px;font-weight:bold;text-align:right;margin-top:2px;');
-}
-
-async function renderLabel(download){
+async function p_t(){
     if(!fill_receipt())return;
     const data=getFormData();
-    const inputNo=document.getElementById('n_no').value;
-    saveToSheets(data);
-    styleLabel();
+    const current=parseInt(document.getElementById('n_no').value)||1;
+     saveToSheets(data);
     const receipt=document.getElementById('receipt');
-    setTimeout(()=>{
-        html2canvas(receipt,{scale:3,backgroundColor:'#ffffff',width:227}).then(canvas=>{
-            canvas.toBlob(async function(blob){
-                if(download){
-                    const url=URL.createObjectURL(blob);
-                    const link=document.createElement('a');
-                    link.download='bil-'+inputNo+'.jpg';
-                    link.href=url;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setTimeout(()=>URL.revokeObjectURL(url),1000);
-                }else{
-                    const file=new File([blob],'bil-'+inputNo+'.jpg',{type:'image/jpeg'});
-                    if(navigator.canShare&&navigator.canShare({files:[file]})){
-                        try{await navigator.share({files:[file]});}catch(e){}
-                    }else{
-                        window.open(URL.createObjectURL(blob),'_blank');
-                    }
-                }
+    receipt.style.cssText="display:block;width:378px;font-family:Arial,sans-serif;font-size:9pt;color:black;background:white;padding:15px 23px;box-sizing:border-box;position:fixed;left:-9999px;top:0;";
+    receipt.querySelectorAll('.rcp-header').forEach(el=>el.style.cssText='text-align:center;margin-bottom:2px;');
+    receipt.querySelectorAll('.rcp-logo').forEach(el=>el.style.cssText='width:18mm;height:auto;display:block;margin:0 auto 2px auto;');
+    receipt.querySelectorAll('.rcp-company').forEach(el=>el.style.cssText='font-size:10.5pt;font-weight:bold;margin:0 0 1px 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-address').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-tel').forEach(el=>el.style.cssText='font-size:8pt;margin:1px 0 0 0;line-height:1.3;text-align:center;');
+    receipt.querySelectorAll('.rcp-title').forEach(el=>el.style.cssText='text-align:center;font-size:11.5pt;font-weight:bold;margin:4px 0 2px 0;letter-spacing:0.3px;');
+    receipt.querySelectorAll('.rcp-nobil-row').forEach(el=>el.style.cssText='display:flex;justify-content:space-between;font-size:9pt;font-weight:bold;margin:5px 0;');
+    receipt.querySelectorAll('.rcp-bayaran').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;text-align:center;margin:3px 0;letter-spacing:0.5px;');
+    receipt.querySelectorAll('.line-solid').forEach(el=>el.style.cssText='border:none;border-top:1.5px solid black;margin:4px 0;');
+    receipt.querySelectorAll('.rcp-row').forEach(el=>el.style.cssText='display:flex;font-size:9pt;margin:2px 0;line-height:1.6;');
+    receipt.querySelectorAll('.lbl').forEach(el=>el.style.cssText='font-weight:bold;width:20mm;flex-shrink:0;');
+    receipt.querySelectorAll('.col').forEach(el=>el.style.cssText='margin-right:3px;font-weight:bold;');
+    receipt.querySelectorAll('.rcp-butiran-lbl').forEach(el=>el.style.cssText='font-size:9pt;font-weight:bold;margin:8px 0 4px 0;');
+    receipt.querySelectorAll('.rcp-butiran-val').forEach(el=>el.style.cssText='font-size:9pt;min-height:14mm;margin-bottom:5px;word-break:break-word;line-height:1.8;');
+    receipt.querySelectorAll('.rcp-jumlah').forEach(el=>el.style.cssText='font-size:10pt;font-weight:bold;margin:5px 0 4px 0;');
+    receipt.querySelectorAll('.rcp-footer').forEach(el=>el.style.cssText='text-align:center;font-size:8.5pt;margin-top:6px;line-height:1.6;');
+    receipt.querySelectorAll('.rcp-dicetak').forEach(el=>el.style.cssText='font-weight:bold;');
+        receipt.querySelectorAll('#p_bas').forEach(el=>el.style.cssText='font-size:9pt;text-align:left;margin-top:18px;font-weight:bold;');
+        receipt.querySelectorAll('.rcp-footer > div:last-child').forEach(el=>el.style.cssText='font-size:8pt;text-align:center;margin-top:8px;color:#000;');  
+        const printWin = window.open('','_blank');
+        setTimeout(async()=>{
+                html2canvas(receipt,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,width:378}).then(async canvas=>{
+            canvas.toBlob(function(blob){
+                const url=URL.createObjectURL(blob);
+                const link=document.createElement('a');
+                link.download='bil-'+inputNo+'.jpg';
+                link.href=url;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(()=>URL.revokeObjectURL(url),1000);
                 receipt.style.cssText='display:none;';
-                document.getElementById('n_no').value=(parseInt(inputNo)||1)+1;
+                const current=parseInt(inputNo)||1;
+                document.getElementById('n_no').value=current+1;
                 manualEdit=false;
                 clearForm();
             },'image/jpeg',0.95);
         });
-    },200);
+    },300);
 }
 
-function p_t(){renderLabel(true);}
-function s_img(){renderLabel(false);}
+async function s_img(){
+    if(!fill_receipt())return;
+    const data=getFormData();
+    const inputNo=document.getElementById('n_no').value;
+    saveToSheets(data);
+    document.getElementById('q_n').innerText=data.noBil;
+    document.getElementById('q_d').innerText=data.tarikh;
+    document.getElementById('q_pay').innerText=data.bayaran;
+    document.getElementById('q_sn').innerText=data.namaPengirim;
+    document.getElementById('q_sp').innerText=data.telPengirim;
+    document.getElementById('q_rn').innerText=data.namaPenerima;
+    document.getElementById('q_rp').innerText=data.telPenerima;
+    document.getElementById('q_desc').innerText=data.butiran;
+    document.getElementById('q_p').innerText=data.jumlah;
+    document.getElementById('q_bas').innerText=document.getElementById('p_bas').innerText;
+    const receipt=document.getElementById('receipt_small');
+    receipt.style.display='block';
+    setTimeout(async()=>{
+        html2canvas(receipt,{scale:4,backgroundColor:'#ffffff',useCORS:true,width:227,height:189}).then(async canvas=>{
+            canvas.toBlob(async function(blob){
+                const fileName='bil-'+inputNo+'.jpg';
+                const file=new File([blob],fileName,{type:'image/jpeg'});
+                if(navigator.canShare && navigator.canShare({files:[file]})){
+                    try{ await navigator.share({files:[file]}); }catch(e){}
+                } else {
+                    const url=URL.createObjectURL(blob);
+                    window.open(url,'_blank');
+                }
+                receipt.style.display='none';
+                const current=parseInt(inputNo)||1;
+                document.getElementById('n_no').value=current+1;
+                manualEdit=false;
+                clearForm();
+            },'image/jpeg',0.95);
+        });
+    },300);
+}
 
 function clearForm(){
     document.getElementById('s_n').value='';
@@ -348,12 +598,11 @@ function clearForm(){
     document.getElementById('r_n').value='';
     document.getElementById('r_p').value='';
     document.getElementById('r_a_sel').value='KGU';
-    h_addr('r');
+h_addr('r');
     document.getElementById('desc').value='';
     document.getElementById('prc').value='';
     document.getElementById('pay_type').value='TUNAI';
 }
-
 const fields = [
   'n_no', 't_date', 'staff',
   's_n', 's_p', 's_a',
@@ -366,10 +615,25 @@ document.addEventListener('keydown', function(e) {
   const active = document.activeElement;
   const idx = fields.indexOf(active.id);
   if (idx === -1) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); const next = document.getElementById(fields[idx + 1]); if (next) next.focus(); }
-  if (e.key === 'ArrowUp') { e.preventDefault(); const prev = document.getElementById(fields[idx - 1]); if (prev) prev.focus(); }
-  if (e.key === 'Enter' && active.tagName === 'BUTTON') { e.preventDefault(); active.click(); }
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = document.getElementById(fields[idx + 1]);
+    if (next) next.focus();
+  }
+
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const prev = document.getElementById(fields[idx - 1]);
+    if (prev) prev.focus();
+  }
+
+  if (e.key === 'Enter' && active.tagName === 'BUTTON') {
+    e.preventDefault();
+    active.click();
+  }
 });
+
 
 ['r_a_sel', 'pay_type'].forEach(function(id) {
     const el = document.getElementById(id);
@@ -388,6 +652,7 @@ document.addEventListener('keydown', function(e) {
     });
 });
 
+
 ['s_p', 's_a', 'r_p', 'r_a', 'desc', 'prc'].forEach(function(id) {
     document.getElementById(id).addEventListener('input', function() {
         const pos = this.selectionStart;
@@ -396,17 +661,27 @@ document.addEventListener('keydown', function(e) {
     });
 });
 
+
 ['s_n', 'r_n', 'staff'].forEach(function(id) {
     document.getElementById(id).addEventListener('input', function() {
         const pos = this.selectionStart;
-        this.value = this.value.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+        this.value = this.value.replace(/\b\w/g, function(c) {
+            return c.toUpperCase();
+        });
         this.setSelectionRange(pos, pos);
     });
 });
 
+
+
 function onBasChange(){
     const name = document.getElementById('no_bas').value;
-    document.getElementById('bas_check').checked = !!name;
+    const checkBox = document.getElementById('bas_check');
+    if (name) {
+        checkBox.checked = true;
+    } else {
+        checkBox.checked = false;
+    }
     saveBasState();
 }
 function saveBasState(){
@@ -437,6 +712,8 @@ window.addEventListener('load', function() {
         document.getElementById('staff').value = savedStaff;
     }
 });
+
+
 </script>
 
 </body>
