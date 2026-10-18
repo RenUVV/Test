@@ -375,23 +375,36 @@
     </div>
 </div>
 
-<div id="receipt_small" style="display:none;width:227px;height:189px;box-sizing:border-box;padding:7px 9px;background:#ffffff;color:#000000;font-family:Arial,sans-serif;overflow:hidden;position:fixed;left:-9999px;top:0;">
-    <div style="text-align:center;font-size:11px;font-weight:bold;line-height:1.1;">SYARIKAT PENGANGKUTAN NUR</div>
-    <div style="display:flex;justify-content:space-between;font-size:9px;font-weight:bold;margin-top:4px;">
-        <span>BIL: <span id="q_n"></span></span>
-        <span id="q_pay"></span>
-        <span id="q_d"></span>
-    </div>
-    <div style="border-top:1px solid #000;margin:4px 0;"></div>
-    <div style="font-size:9px;line-height:1.3;"><b>DARI:</b> <span id="q_sn"></span> <span id="q_sp"></span> <b>(<span id="q_sa"></span>)</b></div>
-    <div style="font-size:9px;line-height:1.3;margin-top:2px;"><b>KEPADA:</b> <span id="q_rn"></span> <span id="q_rp"></span> <b>(<span id="q_ra"></span>)</b></div>
-    <div style="border-top:1px solid #000;margin:4px 0;"></div>
-    <div style="font-size:9px;font-weight:bold;">BARANG:</div>
-    <div id="q_desc" style="font-size:9px;line-height:1.3;height:34px;overflow:hidden;word-break:break-word;"></div>
-    <div style="border-top:1px solid #000;margin:4px 0;"></div>
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
-        <span id="q_bas" style="font-size:8px;font-weight:bold;"></span>
-        <span style="font-size:12px;font-weight:bold;">RM <span id="q_p"></span></span>
+<div id="receipt_small" style="display:none;width:227px;height:189px;box-sizing:border-box;padding:6px;background:#ffffff;color:#000000;font-family:Arial,sans-serif;overflow:hidden;position:fixed;left:-9999px;top:0;">
+    <div style="border:1.5px solid #000;height:100%;box-sizing:border-box;padding:4px;display:flex;flex-direction:column;">
+        <div style="background:#000;color:#fff;text-align:center;font-size:8px;font-weight:bold;letter-spacing:1.5px;padding:3px 0;">SYARIKAT PENGANGKUTAN NUR</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;font-size:9px;font-weight:bold;">
+            <span>BIL #<span id="q_n"></span></span>
+            <span style="border:1px solid #000;border-radius:8px;padding:0 6px;font-size:8px;" id="q_pay"></span>
+            <span id="q_d"></span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:4px;">
+            <div style="flex:1;border:1px solid #000;border-radius:3px;padding:2px 4px;min-width:0;">
+                <div style="font-size:6px;font-weight:bold;letter-spacing:1px;">DARIPADA</div>
+                <div id="q_sn" style="font-size:9px;font-weight:bold;line-height:1.15;word-break:break-word;"></div>
+                <div id="q_sp" style="font-size:8px;line-height:1.2;"></div>
+                <div id="q_sa" style="font-size:8px;font-weight:bold;line-height:1.2;"></div>
+            </div>
+            <div style="flex:1;border:1px solid #000;border-radius:3px;padding:2px 4px;min-width:0;">
+                <div style="font-size:6px;font-weight:bold;letter-spacing:1px;">KEPADA</div>
+                <div id="q_rn" style="font-size:9px;font-weight:bold;line-height:1.15;word-break:break-word;"></div>
+                <div id="q_rp" style="font-size:8px;line-height:1.2;"></div>
+                <div id="q_ra" style="font-size:8px;font-weight:bold;line-height:1.2;"></div>
+            </div>
+        </div>
+        <div style="margin-top:4px;border:1px dashed #000;border-radius:3px;padding:2px 4px;flex:1;min-height:0;overflow:hidden;">
+            <div style="font-size:6px;font-weight:bold;letter-spacing:1px;">BUTIRAN BARANG</div>
+            <div id="q_desc" style="font-size:9px;line-height:1.2;word-break:break-word;overflow:hidden;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+            <span id="q_bas" style="font-size:7px;font-weight:bold;"></span>
+            <span style="background:#000;color:#fff;font-size:12px;font-weight:bold;padding:2px 8px;border-radius:3px;">RM <span id="q_p"></span></span>
+        </div>
     </div>
 </div>
 
